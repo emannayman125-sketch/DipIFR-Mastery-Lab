@@ -1,0 +1,386 @@
+[
+  {
+    "code": "IFRS 15",
+    "title": "Revenue from Contracts with Customers",
+    "topics": [
+      "five-step model",
+      "performance obligations",
+      "transaction price",
+      "variable consideration",
+      "principal vs agent"
+    ]
+  },
+  {
+    "code": "IAS 16",
+    "title": "Property, Plant and Equipment",
+    "topics": [
+      "initial cost",
+      "subsequent expenditure",
+      "revaluation",
+      "component depreciation",
+      "derecognition"
+    ]
+  },
+  {
+    "code": "IAS 23",
+    "title": "Borrowing Costs",
+    "topics": [
+      "qualifying assets",
+      "commencement",
+      "capitalisation rate",
+      "suspension",
+      "cessation"
+    ]
+  },
+  {
+    "code": "IAS 36",
+    "title": "Impairment of Assets",
+    "topics": [
+      "impairment indicators",
+      "CGUs",
+      "recoverable amount",
+      "value in use",
+      "reversals"
+    ]
+  },
+  {
+    "code": "IFRS 16",
+    "title": "Leases",
+    "topics": [
+      "right-of-use asset",
+      "lease liability",
+      "exemptions",
+      "sale and leaseback",
+      "lessor accounting"
+    ]
+  },
+  {
+    "code": "IAS 38",
+    "title": "Intangible Assets",
+    "topics": [
+      "recognition",
+      "research",
+      "development",
+      "measurement",
+      "useful life"
+    ]
+  },
+  {
+    "code": "IFRS 3",
+    "title": "Business Combinations",
+    "topics": [
+      "acquisition method",
+      "consideration",
+      "fair value",
+      "goodwill",
+      "bargain purchase"
+    ]
+  },
+  {
+    "code": "IAS 2",
+    "title": "Inventories",
+    "topics": [
+      "cost",
+      "NRV",
+      "write-down",
+      "reversal",
+      "cost formulas"
+    ]
+  },
+  {
+    "code": "IFRS 9",
+    "title": "Financial Instruments",
+    "topics": [
+      "classification",
+      "SPPI",
+      "business model",
+      "ECL",
+      "derecognition",
+      "hedging"
+    ]
+  },
+  {
+    "code": "IAS 32",
+    "title": "Financial Instruments: Presentation",
+    "topics": [
+      "liability vs equity",
+      "compound instruments",
+      "offsetting"
+    ]
+  },
+  {
+    "code": "IAS 37",
+    "title": "Provisions, Contingent Liabilities and Contingent Assets",
+    "topics": [
+      "recognition",
+      "measurement",
+      "discounting",
+      "contingencies",
+      "restructuring"
+    ]
+  },
+  {
+    "code": "IAS 19",
+    "title": "Employee Benefits",
+    "topics": [
+      "short-term benefits",
+      "defined contribution",
+      "defined benefit",
+      "termination benefits"
+    ]
+  },
+  {
+    "code": "IAS 12",
+    "title": "Income Taxes",
+    "topics": [
+      "current tax",
+      "temporary differences",
+      "deferred tax",
+      "recognition",
+      "measurement"
+    ]
+  },
+  {
+    "code": "IAS 21",
+    "title": "The Effects of Changes in Foreign Exchange Rates",
+    "topics": [
+      "functional currency",
+      "monetary items",
+      "closing rate",
+      "translation",
+      "exchange differences"
+    ]
+  },
+  {
+    "code": "IAS 41",
+    "title": "Agriculture",
+    "topics": [
+      "biological assets",
+      "agricultural produce",
+      "fair value",
+      "government grants"
+    ]
+  },
+  {
+    "code": "IFRS 2",
+    "title": "Share-based Payment",
+    "topics": [
+      "equity settled",
+      "cash settled",
+      "fair value",
+      "vesting conditions",
+      "modification"
+    ]
+  },
+  {
+    "code": "IFRS 6",
+    "title": "Exploration for and Evaluation of Mineral Resources",
+    "topics": [
+      "scope",
+      "initial measurement",
+      "classification",
+      "impairment"
+    ]
+  },
+  {
+    "code": "IFRS 13",
+    "title": "Fair Value Measurement",
+    "topics": [
+      "exit price",
+      "principal market",
+      "valuation techniques",
+      "inputs",
+      "fair value hierarchy"
+    ]
+  },
+  {
+    "code": "IFRS 18",
+    "title": "Presentation and Disclosure in Financial Statements",
+    "topics": [
+      "operating category",
+      "investing category",
+      "financing category",
+      "subtotals",
+      "aggregation and disaggregation"
+    ]
+  },
+  {
+    "code": "IAS 33",
+    "title": "Earnings per Share",
+    "topics": [
+      "basic EPS",
+      "weighted average shares",
+      "bonus issue",
+      "rights issue",
+      "diluted EPS"
+    ]
+  },
+  {
+    "code": "IAS 10",
+    "title": "Events after the Reporting Period",
+    "topics": [
+      "adjusting events",
+      "non-adjusting events",
+      "authorisation",
+      "disclosure"
+    ]
+  },
+  {
+    "code": "IAS 8",
+    "title": "Accounting Policies, Changes in Accounting Estimates and Errors",
+    "topics": [
+      "accounting policies",
+      "estimates",
+      "prior period errors",
+      "retrospective treatment",
+      "going concern"
+    ]
+  },
+  {
+    "code": "IAS 24",
+    "title": "Related Party Disclosures",
+    "topics": [
+      "related party definition",
+      "transactions",
+      "key management",
+      "disclosure"
+    ]
+  },
+  {
+    "code": "IFRS 8",
+    "title": "Operating Segments",
+    "topics": [
+      "operating segments",
+      "CODM",
+      "aggregation",
+      "reportable segments",
+      "thresholds"
+    ]
+  },
+  {
+    "code": "IFRS for SMEs",
+    "title": "IFRS for SMEs Accounting Standard",
+    "topics": [
+      "purpose",
+      "differential reporting",
+      "scope",
+      "omitted topics"
+    ]
+  },
+  {
+    "code": "IFRS 19",
+    "title": "Subsidiaries without Public Accountability",
+    "topics": [
+      "eligibility",
+      "reduced disclosures",
+      "separate financial statements"
+    ]
+  },
+  {
+    "code": "IFRS S1",
+    "title": "General Requirements for Disclosure of Sustainability-related Financial Information",
+    "topics": [
+      "scope",
+      "objectives",
+      "core content",
+      "material information"
+    ]
+  },
+  {
+    "code": "IFRS S2",
+    "title": "Climate-related Disclosures",
+    "topics": [
+      "climate risks",
+      "climate opportunities",
+      "governance",
+      "strategy",
+      "metrics and targets"
+    ]
+  },
+  {
+    "code": "IAS 20",
+    "title": "Accounting for Government Grants and Disclosure of Government Assistance",
+    "topics": [
+      "asset-related grants",
+      "income-related grants",
+      "deferred income",
+      "presentation",
+      "repayment"
+    ]
+  },
+  {
+    "code": "IAS 40",
+    "title": "Investment Property",
+    "topics": [
+      "definition",
+      "fair value model",
+      "cost model",
+      "transfers",
+      "disposals"
+    ]
+  },
+  {
+    "code": "IFRS 5",
+    "title": "Non-current Assets Held for Sale and Discontinued Operations",
+    "topics": [
+      "classification criteria",
+      "measurement",
+      "presentation",
+      "disposal groups",
+      "discontinued operations"
+    ]
+  },
+  {
+    "code": "IFRS 10",
+    "title": "Consolidated Financial Statements",
+    "topics": [
+      "control",
+      "subsidiaries",
+      "NCI",
+      "consolidation",
+      "uniform policies"
+    ]
+  },
+  {
+    "code": "IAS 28",
+    "title": "Investments in Associates and Joint Ventures",
+    "topics": [
+      "significant influence",
+      "equity method",
+      "impairment",
+      "upstream/downstream transactions"
+    ]
+  },
+  {
+    "code": "IFRS 11",
+    "title": "Joint Arrangements",
+    "topics": [
+      "joint control",
+      "joint operations",
+      "joint ventures",
+      "accounting treatment"
+    ]
+  },
+  {
+    "code": "IAS 1",
+    "title": "Presentation of Financial Statements",
+    "topics": [
+      "presentation",
+      "materiality",
+      "going concern",
+      "comparatives",
+      "fair presentation"
+    ]
+  },
+  {
+    "code": "FRAMEWORK-ETHICS",
+    "title": "Conceptual Framework & Professional Ethics",
+    "topics": [
+      "IASB conceptual framework",
+      "elements of financial statements",
+      "fundamental ethical principles",
+      "professional judgement in applying IFRS",
+      "management bias and ethical conflicts"
+    ]
+  }
+]
