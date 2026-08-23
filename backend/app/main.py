@@ -1,3 +1,4 @@
+import logging 
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI, Request
@@ -15,6 +16,8 @@ from .api.tutor import router as tutor_router
 from .api.content import router as content_router
 from .models import User, TopicProgress, PracticeAttempt, RefreshToken, Question, MockExam, MockExamQuestion, ExamAttempt, ExamAnswer, Standard, Topic, LearningResource, PastExamSession, QuestionStandardLink, QuestionCriterion
 from .seed_data import seed_if_empty
+
+logging.basicConfig(level=logging.INFO, format="%(levelname)s:%(name)s: %(message)s")
 
 
 @asynccontextmanager
