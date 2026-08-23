@@ -84,6 +84,8 @@ async def _call_anthropic(system: str, messages: list[dict], max_tokens: int, re
             logger.warning("Anthropic API network error: %s", exc)
             raise AIUnavailable("AI provider network error") from exc
 
+        # 529/overloaded and 500-range errors are worth one retry; 4xx (bad
+        # request, auth, etc.) never will succeed on retry.
         if response.status_code >= 500 and attempt < retries:
             await asyncio.sleep(0.5)
             continue
@@ -104,6 +106,9 @@ async def _call_gemini(system: str, messages: list[dict], max_tokens: int, retri
     headers = {"content-type": "application/json"}
     params = {"key": settings.gemini_api_key}
 
+    # Gemini has no separate "system" role in this endpoint's simplest form;
+    # send it as systemInstruction and map our role names to Gemini's
+    # ("assistant" -> "model").
     contents = [
         {"role": "model" if m["role"] == "assistant" else "user", "parts": [{"text": m["content"]}]}
         for m in messages
@@ -137,6 +142,7 @@ async def _call_gemini(system: str, messages: list[dict], max_tokens: int, retri
         if response.status_code >= 500 and attempt < retries:
             await asyncio.sleep(0.5)
             continue
+        # 429 (rate limit on the free tier) is also worth one retry.
         if response.status_code == 429 and attempt < retries:
             await asyncio.sleep(1.0)
             continue
@@ -182,6 +188,17 @@ async def ask_tutor(
     history: list[dict] | None = None,
     question_context: str | None = None,
 ) -> tuple[str, bool]:
+    """Returns (answer_text, was_ai_generated).
+
+    `history` is a list of {"role": "user"|"assistant", "content": str}
+    from earlier turns in the same conversation, so the tutor can handle
+    natural follow-ups ("what about IAS 23 in the same scenario?") instead
+    of treating every message as an isolated question.
+
+    `question_context`, if provided (e.g. from a "Explain this question"
+    button on a Practice/Exam question), is prepended so the tutor answers
+    about that specific question rather than in the abstract.
+    """
     if not is_configured():
         return (
             "The AI tutor isn't connected yet on this server (no ANTHROPIC_API_KEY or "
@@ -225,6 +242,7 @@ GRADING_SYSTEM_PROMPT = (
 
 
 async def grade_answer_with_ai(question_prompt: str, model_answer: str, student_answer: str) -> tuple[int, str] | None:
+    """Returns (score_percent, feedback) or None if AI grading is unavailable."""
     if not is_configured():
         return None
     user_message = (
