@@ -43,4 +43,4 @@ class Settings(BaseSettings):
                     "SECRET_KEY must be a random value of at least 32 characters in production."
                 )
             if self.database_url.startswith("sqlite"):
-                raise RuntimeError("Production must use PostgreSQL (or another server
+                                raise RuntimeError("Production must use PostgreSQL (or another server database), not SQLite.")
