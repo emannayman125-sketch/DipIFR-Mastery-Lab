@@ -31,7 +31,10 @@ class Settings(BaseSettings):
     # Without it, the tutor and grading fall back to clearly-labelled
     # rule-based behaviour instead of failing.
     anthropic_api_key: str | None = None
-    anthropic_model: str = "claude-sonnet-5"
+anthropic_model: str = "claude-sonnet-5"
+
+    gemini_api_key: str | None = None
+    gemini_model: str = "gemini-2.0-flash"
 
     model_config = SettingsConfigDict(env_file=".env", extra="ignore")
 
