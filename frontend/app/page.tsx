@@ -123,7 +123,7 @@ export default function Home() {
         {loadError && <div className="notice">{loadError}</div>}
         {view==="dashboard" && <Dashboard overall={overall} progress={progress} setView={setView}/>}
         {view==="standards" && <Standards progress={progress} setView={setView} standards={standardsData}/>}
-        {view==="questions" && <QuestionBank/>}
+        {view==="questions" && <QuestionBank onSubmitted={loadProgress} onAskTutor={(ctx)=>{setTutorContext(ctx); setView("tutor");}}/>}
         {view==="pastExams" && <PastExamRounds setView={setView} onOpenMock={(id)=>{setSelectedExamId(id);setView("exams")}}/>}
         {view==="exams" && <MockExams onFinished={loadProgress} selectedExamId={selectedExamId}/>}
         {view==="practice" && <Practice onSubmitted={loadProgress} onAskTutor={(ctx)=>{setTutorContext(ctx); setView("tutor");}}/>}
@@ -157,16 +157,92 @@ function Metric({title,value,note}:{title:string;value:string;note:string}) { re
 function SectionTitle({title,action,onClick}:{title:string;action?:string;onClick?:()=>void}) { return <div className="sectionTitle"><h3>{title}</h3>{action&&<button className="link" onClick={onClick}>{action} →</button>}</div> }
 
 
-function QuestionBank() {
+// ---------------------------------------------------------------------------
+// Question Bank — browse the full bank, then open any question directly in
+// an Answer Workspace (write/spreadsheet answer, submit, get scored + AI
+// feedback, ask the tutor about it) instead of only being able to browse.
+// Reuses the same /learning/practice/submit endpoint as adaptive Practice —
+// that endpoint accepts any question_id, not just the recommended one.
+// ---------------------------------------------------------------------------
+function QuestionBank({onSubmitted,onAskTutor}:{onSubmitted:()=>void;onAskTutor:(context:string)=>void}) {
   const [items,setItems]=useState<import('./lib/api').QuestionBankItem[]>([]);
   const [query,setQuery]=useState(''); const [integrated,setIntegrated]=useState(false);
   const [pastExamOnly,setPastExamOnly]=useState(false); const [loading,setLoading]=useState(true);
+  const [active,setActive]=useState<import('./lib/api').QuestionBankItem|null>(null);
   const load=async()=>{setLoading(true); try{setItems(await api.getQuestionBank({q:query||undefined,integrated:integrated||undefined,source:pastExamOnly?"past_exam":undefined,limit:200}));}finally{setLoading(false)}};
   useEffect(()=>{load()},[integrated,pastExamOnly]);
+
+  if (active) {
+    return <QuestionAnswerWorkspace item={active} onBack={()=>setActive(null)} onSubmitted={onSubmitted} onAskTutor={onAskTutor} />;
+  }
+
   return <div className="stack">
     <section className="hero"><div><span className="pill">QUESTION BANK</span><h2>Practise every standard. Connect the standards.</h2><p>Questions are tagged by standard, difficulty, source and integration. Cross-standard questions deliberately test the links between IFRS requirements.</p></div><div className="scoreRing"><strong>{items.length}</strong><span>loaded questions</span></div></section>
-    <div className="panel"><div className="sectionTitle"><h3>Search the bank</h3><div style={{display:"flex",gap:8}}><button className={integrated?"primary":"ghost"} onClick={()=>setIntegrated(v=>!v)}>{integrated?'Cross-standard only':'Show cross-standard'}</button><button className={pastExamOnly?"primary":"ghost"} onClick={()=>setPastExamOnly(v=>!v)}>{pastExamOnly?'Real past exam only':'Show real past exam'}</button></div></div><div style={{display:'flex',gap:12,marginBottom:18}}><input value={query} onChange={e=>setQuery(e.target.value)} onKeyDown={e=>{if(e.key==='Enter')load()}} placeholder="Search IAS 36, impairment, disclosure..." style={{flex:1}}/><button className="primary" onClick={load}>Search</button></div>{loading?<p className="lead">Loading question bank…</p>:<div className="cardGrid">{items.map(q=><article className="card" key={q.id}><div className="cardTop"><span className="code">{q.standard_code}</span><span className="mini">{q.marks} marks</span></div><h3>{q.topic}</h3><p>{q.prompt}</p><div className="examMeta"><span>{q.difficulty}</span><span>{q.question_type.replace('_',' ')}</span><span>{q.integrated?'Integrated':''}</span>{q.source_round&&<span>{q.source_round}{q.question_number?` · Q${q.question_number}`:""}</span>}</div></article>)}</div>}</div>
+    <div className="panel"><div className="sectionTitle"><h3>Search the bank</h3><div style={{display:"flex",gap:8}}><button className={integrated?"primary":"ghost"} onClick={()=>setIntegrated(v=>!v)}>{integrated?'Cross-standard only':'Show cross-standard'}</button><button className={pastExamOnly?"primary":"ghost"} onClick={()=>setPastExamOnly(v=>!v)}>{pastExamOnly?'Real past exam only':'Show real past exam'}</button></div></div><div style={{display:'flex',gap:12,marginBottom:18}}><input value={query} onChange={e=>setQuery(e.target.value)} onKeyDown={e=>{if(e.key==='Enter')load()}} placeholder="Search IAS 36, impairment, disclosure..." style={{flex:1}}/><button className="primary" onClick={load}>Search</button></div>{loading?<p className="lead">Loading question bank…</p>:<div className="cardGrid">{items.map(q=><article className="card" key={q.id}><div className="cardTop"><span className="code">{q.standard_code}</span><span className="mini">{q.marks} marks</span></div><h3>{q.topic}</h3><p>{q.prompt}</p><div className="examMeta"><span>{q.difficulty}</span><span>{q.question_type.replace('_',' ')}</span><span>{q.integrated?'Integrated':''}</span>{q.source_round&&<span>{q.source_round}{q.question_number?` · Q${q.question_number}`:""}</span>}</div><button className="primary" style={{marginTop:12}} onClick={()=>setActive(q)}>Answer this question →</button></article>)}</div>}</div>
   </div>
+}
+
+// Answer Workspace: the question + its metadata on one side, an answer area
+// matching the question type (write / spreadsheet) below it. Submitting
+// scores the answer via the same grading pipeline as adaptive Practice and
+// shows marking feedback, with a direct link into the AI Tutor grounded in
+// this specific question.
+function QuestionAnswerWorkspace({item,onBack,onSubmitted,onAskTutor}:{item:import('./lib/api').QuestionBankItem;onBack:()=>void;onSubmitted:()=>void;onAskTutor:(context:string)=>void}) {
+  const [answer,setAnswer]=useState("");
+  const [mode,setMode]=useState<ResponseMode>("word_processor");
+  const [result,setResult]=useState<{score:number;feedback:string;aiGraded:boolean}|null>(null);
+  const [error,setError]=useState<string|null>(null);
+  const [saving,setSaving]=useState(false);
+
+  const submit = async () => {
+    if (!answer.trim()) return;
+    setSaving(true);
+    setError(null);
+    try {
+      const res = await api.submitPractice(item.id, answer.trim(), mode);
+      setResult({ score: res.score_percent, feedback: res.feedback, aiGraded: res.graded_by_ai });
+      onSubmitted();
+    } catch {
+      setError("Could not save your attempt. Please try again.");
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  return <div className="stack"><div className="panel">
+    <button type="button" className="ghost" onClick={onBack} style={{marginBottom:16}}>← Back to Question Bank</button>
+    <span className="pill">{item.standard_code}{item.integrated && item.related_standards.length>1 ? ` (+ ${item.related_standards.filter(c=>c!==item.standard_code).join(", ")})` : ""}</span>
+    <h2>{item.topic}</h2>
+    <div className="examMeta"><span>{item.marks} marks</span><span>{item.difficulty}</span><span>{item.question_type.replace('_',' ')}</span>{item.source_round && <span>{item.source_round}{item.question_number?` · Q${item.question_number}`:""}</span>}</div>
+    <p style={{whiteSpace:"pre-wrap"}}>{item.prompt}</p>
+    <button type="button" className="link" onClick={()=>onAskTutor(`${item.prompt}\n\n(Marks: ${item.marks}, Standard(s): ${item.related_standards.join(", ")})`)}>Ask the AI Tutor about this question →</button>
+
+    {!result && (
+      <div className="examHeader" style={{marginTop:8}}>
+        <span></span>
+        <button type="button" className="ghost" onClick={()=>setMode(m=>m==="word_processor"?"spreadsheet":"word_processor")}>
+          {mode==="word_processor" ? "Switch to Spreadsheet" : "Switch to Word Processor"}
+        </button>
+      </div>
+    )}
+    {mode === "word_processor" ? (
+      <textarea value={answer} onChange={e=>setAnswer(e.target.value)} placeholder="Write your exam-style answer..." disabled={!!result} />
+    ) : (
+      <SpreadsheetGrid grid={textToGrid(answer)} onChange={g => setAnswer(gridToText(g))} />
+    )}
+
+    {error && <div className="inlineError">{error}</div>}
+    {!result ? (
+      <button className="primary" onClick={submit} disabled={saving || !answer.trim()}>{saving?"Marking…":"Submit & Mark"}</button>
+    ) : (
+      <>
+        <div className="success">
+          Score: {result.score}%. {result.feedback} {!result.aiGraded && <em>(keyword-based grading — connect an AI provider for richer feedback)</em>}
+        </div>
+        <button className="primary" onClick={onBack}>← Back to Question Bank</button>
+      </>
+    )}
+  </div></div>
 }
 
 function PastExamRounds({setView,onOpenMock}:{setView:(v:View)=>void;onOpenMock:(examId:number)=>void}) {
