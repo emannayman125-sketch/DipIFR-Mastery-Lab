@@ -127,7 +127,7 @@ export default function Home() {
         {view==="pastExams" && <PastExamRounds setView={setView} onOpenMock={(id)=>{setSelectedExamId(id);setView("exams")}}/>}
         {view==="exams" && <MockExams onFinished={loadProgress} selectedExamId={selectedExamId}/>}
         {view==="practice" && <Practice onSubmitted={loadProgress} onAskTutor={(ctx)=>{setTutorContext(ctx); setView("tutor");}}/>}
-        {view==="learning" && <Learning progress={progress} overall={overall}/>}
+        {view==="learning" && <Learning progress={progress} overall={overall} standards={standardsData}/>}
         {view==="knowledge" && <KnowledgeBase/>}
         {view==="tutor" && <Tutor initialQuestionContext={tutorContext}/>}
       </section>
@@ -695,12 +695,25 @@ function Practice({onSubmitted,onAskTutor}:{onSubmitted:()=>void;onAskTutor:(con
   </div></div>
 }
 
-function Learning({progress,overall}:{progress:Record<string,number>;overall:number}) {
-  const rec=Object.entries(progress).sort((a,b)=>a[1]-b[1]).slice(0,3);
-  return <div className="stack"><section className="hero compact"><div><span className="pill">LEARNING ENGINE</span><h2>Next steps based on your actual performance.</h2><p>Complete mocks and practice attempts to build a stronger evidence base.</p></div><div className="scoreRing"><strong>{overall}%</strong><span>mastery</span></div></section>
-    {rec.length === 0
-      ? <p className="lead">No recommendations yet — submit a few practice attempts and this will populate from your real results.</p>
-      : <div className="cardGrid">{rec.map(([topic,v])=><article className="card" key={topic}><span className="code">NEXT</span><h3>{topic}</h3><p>Current mastery {v}%. Review the core treatment, attempt a cross-standard question, then retest.</p><div className="bar"><i style={{width:`${v}%`}}/></div></article>)}</div>}
+function Learning({progress,overall,standards}:{progress:Record<string,number>;overall:number;standards:import("./lib/api").StandardOut[]}) {
+  return <div className="stack"><section className="hero compact"><div><span className="pill">LEARNING ENGINE</span><h2>Track every standard, not just the weak ones.</h2><p>Mastery rises automatically each time you answer a question linked to a standard — from Practice, the Question Bank, or exams.</p></div><div className="scoreRing"><strong>{overall}%</strong><span>overall mastery</span></div></section>
+    {standards.length === 0
+      ? <p className="lead">Standards are loading…</p>
+      : <div className="panel">
+          <SectionTitle title="All standards" />
+          <div className="progressList">
+            {standards.map(s => {
+              const mastery = progress[s.code] ?? s.mastery ?? 0;
+              return (
+                <div className="progressRow" key={s.code}>
+                  <div><b>{s.code}</b><small>{s.title} · {mastery}% mastery</small></div>
+                  <div className="bar"><i style={{width:`${mastery}%`}}/></div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+    }
   </div>
 }
 
