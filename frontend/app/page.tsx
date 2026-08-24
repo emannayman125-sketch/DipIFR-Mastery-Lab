@@ -7,13 +7,13 @@ import {
   NextQuestionResponse, ExamSummary, ExamDetail, ExamQuestion, ResponseMode, ExamAnalysisResponse, OfficialResource,
 } from "./lib/api";
 
-type View = "dashboard" | "standards" | "questions" | "pastExams" | "exams" | "practice" | "learning" | "knowledge" | "tutor";
+type View = "dashboard" | "standards" | "questions" | "exams" | "practice" | "learning" | "knowledge" | "tutor";
 type Standard = { code: string; title: string; topics: string[] };
 
 
 
 const nav: Array<[View, string, string]> = [
-  ["dashboard","⌂","Dashboard"],["standards","▦","IFRS Library"],["questions","☷","Question Bank"],["pastExams","◫","Past Exam Rounds"],["exams","▤","Mock Exams"],
+  ["dashboard","⌂","Dashboard"],["standards","▦","IFRS Library"],["questions","☷","Question Bank"],["exams","▤","Mock Exams"],
   ["practice","⚡","Practice"],["learning","◎","My Learning"],["knowledge","⌕","Knowledge Base"],["tutor","✦","AI Tutor"]
 ];
 
@@ -24,7 +24,6 @@ export default function Home() {
   const [progress, setProgress] = useState<Record<string, number>>({});
   const [standardsData, setStandardsData] = useState<import("./lib/api").StandardOut[]>([]);
   const [loadError, setLoadError] = useState<string | null>(null);
-  const [selectedExamId, setSelectedExamId] = useState<number | null>(null);
   const [tutorContext, setTutorContext] = useState<string | undefined>(undefined);
 
   const loadProgress = async () => {
@@ -124,8 +123,7 @@ export default function Home() {
         {view==="dashboard" && <Dashboard overall={overall} progress={progress} setView={setView}/>}
         {view==="standards" && <Standards progress={progress} setView={setView} standards={standardsData}/>}
         {view==="questions" && <QuestionBank onSubmitted={loadProgress} onAskTutor={(ctx)=>{setTutorContext(ctx); setView("tutor");}}/>}
-        {view==="pastExams" && <PastExamRounds setView={setView} onOpenMock={(id)=>{setSelectedExamId(id);setView("exams")}}/>}
-        {view==="exams" && <MockExams onFinished={loadProgress} selectedExamId={selectedExamId}/>}
+        {view==="exams" && <MockExams onFinished={loadProgress}/>}
         {view==="practice" && <Practice onSubmitted={loadProgress} onAskTutor={(ctx)=>{setTutorContext(ctx); setView("tutor");}}/>}
         {view==="learning" && <Learning progress={progress} overall={overall} standards={standardsData}/>}
         {view==="knowledge" && <KnowledgeBase/>}
@@ -136,7 +134,7 @@ export default function Home() {
 }
 
 function titleFor(view: View) {
-  return ({dashboard:"Your study command center",standards:"IFRS / IAS Library",questions:"Question Bank",pastExams:"Past Exam Rounds",exams:"Mock Exam Center",practice:"Exam-style Practice",learning:"My Learning Path",knowledge:"Knowledge Base",tutor:"AI Accounting Tutor"})[view];
+  return ({dashboard:"Your study command center",standards:"IFRS / IAS Library",questions:"Question Bank",exams:"Mock Exam Center",practice:"Exam-style Practice",learning:"My Learning Path",knowledge:"Knowledge Base",tutor:"AI Accounting Tutor"})[view];
 }
 
 function Dashboard({overall,progress,setView}:{overall:number;progress:Record<string,number>;setView:(v:View)=>void}) {
@@ -243,16 +241,6 @@ function QuestionAnswerWorkspace({item,onBack,onSubmitted,onAskTutor}:{item:impo
       </>
     )}
   </div></div>
-}
-
-function PastExamRounds({setView,onOpenMock}:{setView:(v:View)=>void;onOpenMock:(examId:number)=>void}) {
-  const [sessions,setSessions]=useState<import('./lib/api').PastExamOut[]>([]);
-  const [exams,setExams]=useState<ExamSummary[]>([]);
-  useEffect(()=>{Promise.all([api.getPastExams(),api.listExams()]).then(([s,e])=>{setSessions(s);setExams(e)}).catch(()=>{})},[]);
-  return <div className="stack">
-    <section className="hero"><div><span className="pill">PAST EXAM ROUNDS</span><h2>Benchmark against historical DipIFR sessions.</h2><p>Historical sessions are catalogued separately from adaptive practice. Each indexed round is linked to its source metadata; the fixed mock center preserves the historical four-question structure.</p></div><div className="scoreRing"><strong>{sessions.length}</strong><span>rounds indexed</span></div></section>
-    <div className="cardGrid">{sessions.map(s=><article className="card" key={s.id}><div className="cardTop"><span className="code">{s.session_name}</span><span className="mini">{s.total_marks} marks</span></div><h3>Past Exam Round</h3><p>Historical session indexed from the supplied exam compilation. Open the fixed mock to practise the four-question historical structure using the indexed source material.</p><div className="examMeta"><span>{s.question_count} questions</span><span>{s.duration_minutes} min</span><span>{s.source_type.replace('_',' ')}</span></div><button className={s.available_for_simulation?'primary':'ghost'} disabled={!s.available_for_simulation} onClick={()=>{const exam=exams.find(e=>e.title===`Past Round — ${s.session_name}`); if(exam) onOpenMock(exam.id); else setView("exams")}}>{s.available_for_simulation?'Open fixed mock →':'Reference only'}</button></article>)}</div>
-  </div>
 }
 
 function Standards({progress,setView,standards}:{progress:Record<string,number>;setView:(v:View)=>void;standards:import("./lib/api").StandardOut[]}) {
@@ -398,7 +386,7 @@ function OfficialResourcesSection() {
   </div>
 }
 
-function MockExams({onFinished,selectedExamId}:{onFinished:()=>void;selectedExamId?:number|null}) {
+function MockExams({onFinished}:{onFinished:()=>void}) {
   const [exams,setExams]=useState<ExamSummary[]|null>(null);
   const [loadErr,setLoadErr]=useState<string|null>(null);
   const [attempt,setAttempt]=useState<{attemptId:number;exam:ExamDetail;expiresAt:string}|null>(null);
@@ -415,10 +403,6 @@ function MockExams({onFinished,selectedExamId}:{onFinished:()=>void;selectedExam
   const autosaveTimer = useRef<number | null>(null);
 
   useEffect(()=>{ api.listExams().then(setExams).catch(()=>setLoadErr("Could not load exams from the server.")); },[]);
-
-  useEffect(()=>{
-    if (selectedExamId && exams?.some(e=>e.id===selectedExamId)) start(selectedExamId);
-  }, [selectedExamId, exams]);
 
   const start = async (examId:number) => {
     setStarting(examId);
