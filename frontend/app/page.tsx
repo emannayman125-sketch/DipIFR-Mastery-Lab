@@ -42,24 +42,41 @@ export default function Home() {
     }
   };
 
+  const loadStandards = async () => {
+    try {
+      const data = await api.getStandards();
+      setStandardsData(data);
+    } catch {
+      // Leave standardsData as-is (usually still empty on the very first
+      // failed attempt) — the IFRS Library panel just shows nothing extra
+      // rather than an error banner, since this list is supplementary to
+      // the rest of the page.
+    }
+  };
+
   useEffect(() => {
-    api.getStandards().then(setStandardsData).catch(()=>{});
     const cachedName = typeof window !== "undefined" ? window.localStorage.getItem("dipifr-user") : null;
     if (cachedName) setUser(cachedName);
 
     // The access token lives only in memory, so on every page load/reload
     // we need to try exchanging the HttpOnly refresh cookie (if any) for a
     // fresh one before we know whether the student is actually signed in.
+    // /content/standards requires auth, so it's only fetched *after* we
+    // know a valid token exists — fetching it eagerly at mount (before the
+    // token exists) would 401 and silently leave the IFRS Library empty
+    // forever, which is exactly the bug this now avoids.
     (async () => {
       if (getToken()) {
         setAuthed(true);
         loadProgress();
+        loadStandards();
         return;
       }
       const restored = await restoreSession();
       if (restored) {
         setAuthed(true);
         loadProgress();
+        loadStandards();
       } else {
         setAuthed(false);
       }
@@ -76,6 +93,7 @@ export default function Home() {
     window.localStorage.setItem("dipifr-user", displayName);
     setAuthed(true);
     loadProgress();
+    loadStandards();
   };
 
   const logout = async () => {
