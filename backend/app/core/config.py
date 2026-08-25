@@ -41,6 +41,11 @@ class Settings(BaseSettings):
     gemini_api_key: str | None = None
     gemini_model: str = "gemini-2.0-flash"
 
+    # Optional: set to enable the /admin endpoints (list of registered
+    # students). Without it, /admin routes return 503. The frontend admin
+    # page sends this same value back as the X-Admin-Key header.
+    admin_key: str | None = None
+
     # Optional: set smtp_host + smtp_from_email to enable real email delivery
     # (verification / password reset) via any SMTP provider — Amazon SES,
     # SendGrid, Postmark, Mailgun, Gmail/Workspace, etc. Without these, the
