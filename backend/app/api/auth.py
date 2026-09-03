@@ -1,6 +1,6 @@
 from datetime import datetime, timedelta, timezone
 
-from fastapi import APIRouter, Cookie, Depends, HTTPException, Request, Response, status
+from fastapi import APIRouter, BackgroundTasks, Cookie, Depends, HTTPException, Request, Response, status
 from sqlalchemy.orm import Session
 from sqlalchemy import select, update
 
@@ -110,7 +110,13 @@ def _consume_one_time_token(db: Session, raw: str, purpose: str) -> OneTimeToken
 
 @router.post("/register", response_model=AuthResponse, status_code=201)
 @limiter.limit(settings.rate_limit_auth)
-def register(request: Request, response: Response, data: RegisterRequest, db: Session = Depends(get_db)):
+def register(
+    request: Request,
+    response: Response,
+    data: RegisterRequest,
+    background_tasks: BackgroundTasks,
+    db: Session = Depends(get_db),
+):
     email = data.email.lower()
     if db.scalar(select(User).where(User.email == email)):
         raise HTTPException(status_code=409, detail="Email already registered")
@@ -122,7 +128,7 @@ def register(request: Request, response: Response, data: RegisterRequest, db: Se
 
     verify_token = _create_one_time_token(db, user.id, "email_verify", timedelta(hours=settings.verification_token_hours))
     verify_url = f"{settings.frontend_url}/verify-email?token={verify_token}"
-    send_verification_email(user.email, verify_url)
+    background_tasks.add_task(send_verification_email, user.email, verify_url)
 
     return _issue_tokens(db, response, user)
 
@@ -145,97 +151,4 @@ def refresh(
     refresh_token: str | None = Cookie(default=None, alias=settings.refresh_cookie_name),
 ):
     if not refresh_token:
-        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="No refresh token cookie present")
-
-    token_hash = hash_refresh_token(refresh_token)
-    stored = db.scalar(select(RefreshToken).where(RefreshToken.token_hash == token_hash))
-    if not stored or not stored.is_valid():
-        _clear_refresh_cookie(response)
-        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid or expired refresh token")
-
-    user = db.scalar(select(User).where(User.id == stored.user_id))
-    if not user:
-        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="User not found")
-
-    # Rotate atomically so two concurrent refresh requests cannot both reuse
-    # the same token successfully.
-    result = db.execute(
-        update(RefreshToken)
-        .where(RefreshToken.id == stored.id, RefreshToken.revoked.is_(False))
-        .values(revoked=True)
-    )
-    if result.rowcount != 1:
-        db.rollback()
-        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid or expired refresh token")
-    db.commit()
-    return _issue_tokens(db, response, user)
-
-
-@router.post("/logout", status_code=204)
-def logout(
-    response: Response,
-    db: Session = Depends(get_db),
-    refresh_token: str | None = Cookie(default=None, alias=settings.refresh_cookie_name),
-):
-    if refresh_token:
-        token_hash = hash_refresh_token(refresh_token)
-        stored = db.scalar(select(RefreshToken).where(RefreshToken.token_hash == token_hash))
-        if stored:
-            stored.revoked = True
-            db.commit()
-    _clear_refresh_cookie(response)
-    return None
-
-
-@router.post("/verify-email")
-def verify_email(data: VerifyEmailRequest, db: Session = Depends(get_db)):
-    token = _consume_one_time_token(db, data.token, "email_verify")
-    user = db.scalar(select(User).where(User.id == token.user_id))
-    if not user:
-        raise HTTPException(status_code=400, detail="Invalid or expired verification link")
-    user.is_verified = True
-    db.commit()
-    return {"detail": "Email verified successfully."}
-
-
-@router.post("/resend-verification")
-@limiter.limit(settings.rate_limit_auth)
-def resend_verification(request: Request, data: ResendVerificationRequest, db: Session = Depends(get_db)):
-    user = db.scalar(select(User).where(User.email == data.email.lower()))
-    if user and not user.is_verified:
-        verify_token = _create_one_time_token(db, user.id, "email_verify", timedelta(hours=settings.verification_token_hours))
-        verify_url = f"{settings.frontend_url}/verify-email?token={verify_token}"
-        send_verification_email(user.email, verify_url)
-    return GENERIC_EMAIL_SENT_MESSAGE
-
-
-@router.post("/password/forgot")
-@limiter.limit(settings.rate_limit_auth)
-def forgot_password(request: Request, data: ForgotPasswordRequest, db: Session = Depends(get_db)):
-    user = db.scalar(select(User).where(User.email == data.email.lower()))
-    if user:
-        reset_token = _create_one_time_token(db, user.id, "password_reset", timedelta(minutes=settings.reset_token_minutes))
-        reset_url = f"{settings.frontend_url}/reset-password?token={reset_token}"
-        send_password_reset_email(user.email, reset_url)
-    # Same generic response whether or not the email exists.
-    return GENERIC_EMAIL_SENT_MESSAGE
-
-
-@router.post("/password/reset")
-@limiter.limit(settings.rate_limit_auth)
-def reset_password(request: Request, data: ResetPasswordRequest, db: Session = Depends(get_db)):
-    token = _consume_one_time_token(db, data.token, "password_reset")
-    user = db.scalar(select(User).where(User.id == token.user_id))
-    if not user:
-        raise HTTPException(status_code=400, detail="Invalid or expired reset link")
-
-    user.password_hash = hash_password(data.new_password)
-    db.commit()
-
-    # Revoke all existing sessions on password reset — a compromised
-    # password shouldn't leave old refresh tokens usable.
-    for token in db.scalars(select(RefreshToken).where(RefreshToken.user_id == user.id)):
-        token.revoked = True
-    db.commit()
-
-    return {"detail": "Password reset successfully. Please sign in again."}
+        raise
