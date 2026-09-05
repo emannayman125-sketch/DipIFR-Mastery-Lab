@@ -151,4 +151,102 @@ def refresh(
     refresh_token: str | None = Cookie(default=None, alias=settings.refresh_cookie_name),
 ):
     if not refresh_token:
-        raise
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Missing refresh token")
+
+    token_hash = hash_refresh_token(refresh_token)
+    token_row = db.scalar(select(RefreshToken).where(RefreshToken.token_hash == token_hash))
+    if not token_row or not token_row.is_valid():
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid or expired refresh token")
+
+    user = db.get(User, token_row.user_id)
+    if not user:
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="User not found")
+
+    # Rotate: revoke the presented refresh token so it can never be reused,
+    # then issue a brand new access/refresh pair.
+    token_row.revoked = True
+    db.commit()
+
+    return _issue_tokens(db, response, user)
+
+
+@router.post("/logout", status_code=status.HTTP_204_NO_CONTENT)
+def logout(
+    response: Response,
+    db: Session = Depends(get_db),
+    refresh_token: str | None = Cookie(default=None, alias=settings.refresh_cookie_name),
+):
+    if refresh_token:
+        token_hash = hash_refresh_token(refresh_token)
+        token_row = db.scalar(select(RefreshToken).where(RefreshToken.token_hash == token_hash))
+        if token_row:
+            token_row.revoked = True
+            db.commit()
+    _clear_refresh_cookie(response)
+    return Response(status_code=status.HTTP_204_NO_CONTENT)
+
+
+@router.post("/password/forgot")
+@limiter.limit(settings.rate_limit_auth)
+def forgot_password(
+    request: Request,
+    data: ForgotPasswordRequest,
+    background_tasks: BackgroundTasks,
+    db: Session = Depends(get_db),
+):
+    # Always return the same generic message, whether or not the email is
+    # registered, so this endpoint can't be used to enumerate accounts.
+    user = db.scalar(select(User).where(User.email == data.email.lower()))
+    if user:
+        reset_token = _create_one_time_token(db, user.id, "password_reset", timedelta(minutes=settings.reset_token_minutes))
+        reset_url = f"{settings.frontend_url}/reset-password?token={reset_token}"
+        background_tasks.add_task(send_password_reset_email, user.email, reset_url)
+    return GENERIC_EMAIL_SENT_MESSAGE
+
+
+@router.post("/password/reset")
+@limiter.limit(settings.rate_limit_auth)
+def reset_password(request: Request, data: ResetPasswordRequest, db: Session = Depends(get_db)):
+    token_row = _consume_one_time_token(db, data.token, "password_reset")
+    user = db.get(User, token_row.user_id)
+    if not user:
+        raise HTTPException(status_code=400, detail="Invalid or expired link")
+
+    user.password_hash = hash_password(data.new_password)
+    # Revoke every existing refresh token so a stolen session can't survive
+    # a password reset.
+    db.execute(
+        update(RefreshToken).where(RefreshToken.user_id == user.id).values(revoked=True)
+    )
+    db.commit()
+    return {"detail": "Password updated successfully."}
+
+
+@router.post("/verify-email")
+@limiter.limit(settings.rate_limit_auth)
+def verify_email(request: Request, data: VerifyEmailRequest, db: Session = Depends(get_db)):
+    token_row = _consume_one_time_token(db, data.token, "email_verify")
+    user = db.get(User, token_row.user_id)
+    if not user:
+        raise HTTPException(status_code=400, detail="Invalid or expired link")
+
+    user.is_verified = True
+    db.commit()
+    return {"detail": "Email verified successfully."}
+
+
+@router.post("/resend-verification")
+@limiter.limit(settings.rate_limit_auth)
+def resend_verification(
+    request: Request,
+    data: ResendVerificationRequest,
+    background_tasks: BackgroundTasks,
+    db: Session = Depends(get_db),
+):
+    # Same anti-enumeration approach as forgot-password.
+    user = db.scalar(select(User).where(User.email == data.email.lower()))
+    if user and not user.is_verified:
+        verify_token = _create_one_time_token(db, user.id, "email_verify", timedelta(hours=settings.verification_token_hours))
+        verify_url = f"{settings.frontend_url}/verify-email?token={verify_token}"
+        background_tasks.add_task(send_verification_email, user.email, verify_url)
+    return GENERIC_EMAIL_SENT_MESSAGE

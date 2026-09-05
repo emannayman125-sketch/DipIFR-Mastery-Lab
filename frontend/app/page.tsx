@@ -168,6 +168,7 @@ function QuestionBank({onSubmitted,onAskTutor}:{onSubmitted:()=>void;onAskTutor:
   const [pastExamOnly,setPastExamOnly]=useState(false); const [loading,setLoading]=useState(true);
   const [active,setActive]=useState<import('./lib/api').QuestionBankItem|null>(null);
   const load=async()=>{setLoading(true); try{setItems(await api.getQuestionBank({q:query||undefined,integrated:integrated||undefined,source:pastExamOnly?"past_exam":undefined,limit:200}));}finally{setLoading(false)}};
+  // eslint-disable-next-line react-hooks/exhaustive-deps -- `load` intentionally excluded: it closes over `query` and is re-created every render, so including it would refetch on every keystroke instead of only when the filter toggles change.
   useEffect(()=>{load()},[integrated,pastExamOnly]);
 
   if (active) {
