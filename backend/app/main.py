@@ -42,6 +42,18 @@ app.add_middleware(
 @app.get("/health")
 def health():
     return {"status": "ok", "service": "dipifr-mastery-lab-api"}
+
+
+@app.get("/")
+def root():
+    # A friendly response instead of a bare 404 when someone opens the
+    # backend's base URL directly (e.g. while checking a deployment).
+    return {
+        "service": settings.app_name,
+        "status": "ok",
+        "docs": "/docs",
+        "health": "/health",
+    }
 app.include_router(auth_router)
 app.include_router(learning_router)
 app.include_router(exams_router)
