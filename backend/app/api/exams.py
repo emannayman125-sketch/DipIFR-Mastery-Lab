@@ -184,13 +184,20 @@ async def submit_answer(
     if not question:
         raise HTTPException(status_code=400, detail="Question does not belong to this exam")
 
-    ai_result = await grade_answer_with_ai(question.prompt, question.model_answer, data.answer_text)
-    if ai_result:
-        score_percent, feedback = ai_result
-        graded_by_ai = True
-    else:
+    # See the matching comment in api/learning.py: past-exam questions no
+    # longer carry ACCA's real text/answer, so they're graded on our own
+    # keyword rubric rather than an AI comparison against a placeholder.
+    if question.source == "past_exam":
         score_percent, feedback = keyword_grade(data.answer_text, question.rubric_keywords)
         graded_by_ai = False
+    else:
+        ai_result = await grade_answer_with_ai(question.prompt, question.model_answer, data.answer_text)
+        if ai_result:
+            score_percent, feedback = ai_result
+            graded_by_ai = True
+        else:
+            score_percent, feedback = keyword_grade(data.answer_text, question.rubric_keywords)
+            graded_by_ai = False
 
     existing = db.scalar(
         select(ExamAnswer).where(
@@ -250,11 +257,14 @@ async def finish_attempt(attempt_id: int, user: User = Depends(current_user), db
         if answer.is_graded or not answer.answer_text.strip():
             continue
         question = questions_by_id[answer.question_id]
-        ai_result = await grade_answer_with_ai(question.prompt, question.model_answer, answer.answer_text)
-        if ai_result:
-            answer.score_percent, answer.feedback = ai_result
-        else:
+        if question.source == "past_exam":
             answer.score_percent, answer.feedback = keyword_grade(answer.answer_text, question.rubric_keywords)
+        else:
+            ai_result = await grade_answer_with_ai(question.prompt, question.model_answer, answer.answer_text)
+            if ai_result:
+                answer.score_percent, answer.feedback = ai_result
+            else:
+                answer.score_percent, answer.feedback = keyword_grade(answer.answer_text, question.rubric_keywords)
         answer.is_graded = True
     db.flush()
 

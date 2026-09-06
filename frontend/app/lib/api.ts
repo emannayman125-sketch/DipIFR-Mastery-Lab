@@ -129,7 +129,7 @@ export type ExamAnalysisResponse = {
 };
 export type TutorAskResponse = { reply: string; ai_generated: boolean };
 export type TutorMessage = { role: "user" | "assistant"; content: string };
-export type StandardOut = { id:number; code:string; title:string; description:string; question_count:number; mastery:number };
+export type StandardOut = { id:number; code:string; title:string; description:string; question_count:number; mastery:number; examinable:boolean };
 export type QuestionBankItem = { id:number; standard_code:string; topic:string; question_type:string; difficulty:string; marks:number; source:string; prompt:string; integrated:boolean; related_standards:string[]; source_round:string; question_number:number|null; source_reference:string };
 export type PastExamOut = { id:number; session_name:string; exam_date:string; duration_minutes:number; total_marks:number; question_count:number; available_for_simulation:boolean; source_type:string };
 

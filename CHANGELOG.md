@@ -1,11 +1,19 @@
 # Engineering Review & Fixes
 
+## Accounting content accuracy (this session)
+- **Removed all verbatim ACCA copyrighted material.** The 44 "past exam" question records previously stored ACCA's actual exam question text and their real published suggested answers. Both are now replaced with (a) a direct link to the official ACCA past-papers page for that sitting, and (b) our own short factual description of the topics the question covers. Grading for these questions now uses our own keyword rubric instead of an AI comparison against a placeholder.
+- **Added IAS 7 Statement of Cash Flows**, a significant syllabus gap — it is one of the most consistently examined topics in the real DipIFR exam and was previously entirely absent from the platform.
+- **Added IFRS 1 First-time Adoption**, which is on the official examinable syllabus but was missing. Given a full 25-mark flagship question would misrepresent how rarely IFRS 1 appears as a standalone question in the real exam, it instead has a proper scenario-level (10-mark) question, and the syllabus-coverage test documents this deliberately.
+- **Flagged IFRS S1/S2 (ISSB sustainability standards) as not examinable** in the ACCA DipIFR syllabus (new `examinable` field on `Standard`, surfaced in the UI). Replaced a full 25-mark flagship question that had been built around IFRS S1 — occupying a quarter of a mock exam with non-examinable content — with a new, properly integrated IAS 7 flagship question instead.
+- Fixed the standard-tagging logic for legacy past-exam questions, which previously matched against the (now-removed) copyrighted question text; it now matches against our own retained topic keywords.
+
 ## Security (this session)
 - Moved the refresh token out of the JSON response body and localStorage entirely; it is now set by the backend as an HttpOnly, Secure (outside dev/test), SameSite cookie scoped to `/auth` and is never readable by client-side JavaScript.
 - Access token is now held only in an in-memory variable on the frontend (not localStorage/sessionStorage); a new `restoreSession()` silently exchanges the refresh cookie for a fresh access token on page load.
 - Added `REFRESH_COOKIE_SAMESITE` setting (`lax` by default, `none` for cross-site frontend/backend deployments) and production validation for it.
 - Added the `backend/.env.example` and `frontend/.env.example` files referenced by the README but missing from the repo.
 - Documented that the email system is currently a console-logging stub with no real provider wired up (no `EMAIL_API_KEY` in use) — verification/reset emails do not reach real users yet.
+
 
 ## Security
 - Replaced reusable JWT email-verification/password-reset links with hashed, opaque, single-use tokens.

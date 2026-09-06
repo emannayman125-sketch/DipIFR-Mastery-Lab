@@ -822,42 +822,44 @@ FLAGSHIP_INTEGRATED_3 = [
         ],
     ),
     (
-        "IFRS S1", ["IFRS S2"],
-        "Gamma's directors are preparing their first sustainability-related disclosures alongside the "
-        "financial statements and ask you to explain the new ISSB requirements. Required: (a) Explain "
-        "the overall objective of IFRS S1 and the four content areas (governance, strategy, risk "
-        "management, metrics and targets) it requires disclosures to be organised around. (b) Explain how "
-        "IFRS S2 relates to IFRS S1 and what additional matters it specifically requires disclosure of. "
-        "(c) Explain the concept of connectivity between an entity's sustainability-related financial "
-        "disclosures and its financial statements.",
-        "(a) IFRS S1 requires an entity to disclose information about sustainability-related risks and "
-        "opportunities that could reasonably be expected to affect its cash flows, access to finance, or "
-        "cost of capital over the short, medium and long term, so that users of general purpose "
-        "financial reports can assess these effects. Disclosures are organised around four content "
-        "areas: governance (the processes used to monitor and manage sustainability-related risks and "
-        "opportunities), strategy (the approach to managing them), risk management (the processes to "
-        "identify, assess, prioritise and monitor them), and metrics and targets (the entity's "
-        "performance, including progress towards any targets). (b) IFRS S2 applies IFRS S1's four "
-        "content areas specifically to climate-related risks and opportunities, requiring more detailed "
-        "disclosures such as an entity's exposure to climate-related physical and transition risks, "
-        "greenhouse gas emissions (using the Greenhouse Gas Protocol), and climate-related targets; "
-        "IFRS S1 sets the general framework, and IFRS S2 is the first standard developed under it, "
-        "applied together for climate matters specifically. (c) Connectivity means sustainability-"
-        "related financial disclosures should be presented in a way that enables users to understand the "
-        "connections between them and the related financial statements, for example by using consistent "
-        "inputs and assumptions where relevant and disclosing information at the same time as the "
-        "financial statements, so that sustainability information is not viewed in isolation from the "
-        "entity's overall financial position and performance.",
-        "sustainability-related risks and opportunities,governance,strategy,risk management,metrics and "
-        "targets,IFRS S2,climate-related disclosures,greenhouse gas emissions,connectivity",
-        "Explain the ISSB's general sustainability disclosure framework (IFRS S1) and its climate-"
-        "specific companion standard (IFRS S2), including the connectivity principle linking them to the "
-        "financial statements.",
+        "IAS 7", ["IFRS 10"],
+        "Zeta Group's draft consolidated statement of profit or loss for the year ended 31 December "
+        "20X5 shows profit before tax of $18 million, including finance costs of $1.2 million, a "
+        "depreciation charge of $3.4 million, and a profit on disposal of an item of plant of $0.5 "
+        "million (cash proceeds of $2.1 million). During the year, Zeta's 80%-owned subsidiary paid a "
+        "dividend of $1 million, of which $0.2 million was paid to the non-controlling interest. "
+        "Required: (a) Explain why the depreciation charge and the profit on disposal must be adjusted "
+        "for in the operating activities section of the consolidated statement of cash flows when using "
+        "the indirect method, and state where the $2.1 million disposal proceeds are presented instead. "
+        "(b) Explain how the dividend paid to the non-controlling interest should be presented in the "
+        "consolidated statement of cash flows, distinguishing it from a dividend paid by the parent to "
+        "its own shareholders. (c) Starting from profit before tax, calculate cash generated from "
+        "operations before working capital movements.",
+        "(a) Depreciation is a non-cash expense that reduced profit but caused no cash outflow in the "
+        "period, so it is added back to profit before tax when reconciling profit to operating cash "
+        "flow. The profit on disposal is deducted because it is a non-operating gain already included "
+        "in profit before tax; the full cash proceeds of $2.1 million from the disposal are instead "
+        "presented as a single amount under investing activities, so the transaction is reported once, "
+        "in the correct section, rather than partly misclassified as an operating cash flow. (b) The "
+        "dividend paid to the non-controlling interest ($0.2 million) is cash leaving the group to a "
+        "party outside it and is presented as a separate line within financing activities in the "
+        "consolidated statement of cash flows. This is shown separately from any dividend paid by the "
+        "parent to its own shareholders (also a financing outflow) because users of the consolidated "
+        "statement need to see how much cash left the group to non-controlling shareholders of a "
+        "subsidiary as distinct from what the parent paid to its own equity holders. (c) Cash generated "
+        "from operations before working capital movements: profit before tax $18.0m + finance costs "
+        "$1.2m (added back, isolated for separate presentation) + depreciation $3.4m (non-cash add-back) "
+        "− profit on disposal $0.5m (non-operating item removed) = $22.1 million.",
+        "depreciation,non-cash,profit on disposal,investing activities,dividend,non-controlling "
+        "interest,financing activities,indirect method,cash generated from operations,finance costs",
+        "Apply IAS 7 to prepare the operating-activities reconciliation of a consolidated statement of "
+        "cash flows, correctly handling non-cash adjustments, a disposal, and a dividend paid to the "
+        "non-controlling interest.",
         [
-            ("IFRS S1 objective explained", 6, "Effects on cash flows, access to finance, cost of capital over short/medium/long term"),
-            ("Four content areas explained", 8, "Governance, strategy, risk management, metrics and targets all correctly described"),
-            ("IFRS S2's relationship to IFRS S1", 6, "Applies the same four areas specifically to climate; first standard under the S1 framework"),
-            ("Connectivity concept explained", 5, "Sustainability disclosures linked to financial statements, not viewed in isolation"),
+            ("Depreciation add-back explained", 5, "Non-cash expense reducing profit without a corresponding cash outflow"),
+            ("Profit on disposal treatment explained", 6, "Deducted from profit as a non-operating item already in profit before tax; full $2.1m proceeds shown separately under investing activities"),
+            ("NCI dividend classification explained", 6, "The $0.2m paid to the NCI is a separate line within financing activities, distinct from dividends paid by the parent to its own shareholders"),
+            ("Cash generated from operations before working capital changes calculated correctly", 8, "$18.0m + $1.2m + $3.4m − $0.5m = $22.1 million"),
         ],
     ),
 ]
@@ -1310,8 +1312,9 @@ ORIGINAL_QUESTIONS = [
 ("IFRS 8","segments","Explain how operating segments are identified and how reportable segments are determined.","Operating segments are components regularly reviewed by the chief operating decision maker; reportable segments are determined using aggregation criteria and quantitative thresholds.","operating segment,CODM,aggregation,quantitative thresholds",10,"medium"),
 ("IFRS for SMEs","SME reporting","Explain why a separate IFRS for SMEs Accounting Standard exists and how it addresses differential reporting.","The standard reduces complexity and disclosure burden for eligible entities without public accountability while retaining useful information for users.","SME,differential reporting,public accountability,disclosure",10,"easy"),
 ("IFRS 19","reduced disclosures","Explain when a subsidiary can apply the reduced disclosure requirements of IFRS 19.","An eligible subsidiary meeting the standard's conditions may apply reduced disclosures while continuing to recognise and measure items using IFRS Accounting Standards.","eligible subsidiary,reduced disclosures,recognition,measurement",10,"medium"),
-("IFRS S1","sustainability","Explain the objective and core content of IFRS S1 sustainability-related financial disclosures.","IFRS S1 is designed to provide decision-useful information about sustainability-related risks and opportunities that could reasonably be expected to affect cash flows, access to finance or cost of capital.","sustainability risks,opportunities,core content,material information",10,"medium"),
-("IFRS S2","climate","Explain the role of climate-related risk and opportunity disclosures under IFRS S2.","IFRS S2 focuses on climate-related risks and opportunities and builds disclosures around governance, strategy, risk management, and metrics and targets.","climate risks,opportunities,governance,strategy,metrics,targets",10,"medium"),
+("IFRS S1","sustainability [not examinable in DipIFR]","This topic is not part of the examinable ACCA DipIFR syllabus — included for general awareness only. Explain the objective and core content of IFRS S1 sustainability-related financial disclosures.","IFRS S1 is designed to provide decision-useful information about sustainability-related risks and opportunities that could reasonably be expected to affect cash flows, access to finance or cost of capital.","sustainability risks,opportunities,core content,material information",10,"medium"),
+("IFRS S2","climate [not examinable in DipIFR]","This topic is not part of the examinable ACCA DipIFR syllabus — included for general awareness only. Explain the role of climate-related risk and opportunity disclosures under IFRS S2.","IFRS S2 focuses on climate-related risks and opportunities and builds disclosures around governance, strategy, risk management, and metrics and targets.","climate risks,opportunities,governance,strategy,metrics,targets",10,"medium"),
+("IFRS 1","first-time adoption","Explain the general principle an entity applies in its opening IFRS statement of financial position on first-time adoption, and name two optional exemptions it may use.","On transition, an entity applies IFRS Accounting Standards retrospectively as if it had always applied them, recognising all assets and liabilities required by IFRS and derecognising items not permitted, with the net adjustment taken to opening retained earnings. IFRS 1 provides optional exemptions (for example for business combinations and cumulative translation differences) and mandatory exceptions to full retrospective application to keep transition practicable.","opening IFRS statement of financial position,retrospective application,optional exemption,mandatory exception,transition date",10,"medium"),
 ("IAS 20","government grants","Explain two acceptable presentation approaches for an asset-related government grant and the effect on future profit.","An asset-related grant may be presented as deferred income recognised systematically over the asset's useful life or deducted from the carrying amount of the asset, consistent with the standard.","asset-related grant,deferred income,carrying amount,systematic basis",10,"medium"),
 ("IAS 40","investment property","Distinguish investment property from owner-occupied property and explain the fair value model.","Investment property is property held to earn rentals or for capital appreciation. Under the fair value model, qualifying changes in fair value are recognised in profit or loss.","investment property,owner occupied,fair value model,profit or loss",10,"medium"),
 ("IFRS 5","held for sale","Explain the criteria for classification as held for sale and the subsequent measurement and presentation requirements.","The asset or disposal group must be available for immediate sale in its present condition and the sale must be highly probable. Once classified, measurement is at the lower of carrying amount and fair value less costs to sell and depreciation ceases.","held for sale,highly probable,fair value less costs to sell,depreciation",10,"medium"),
@@ -1348,9 +1351,17 @@ def seed_if_empty(db: Session) -> None:
     standard_map={}
     for item in STANDARD_CATALOG:
         obj=db.scalar(select(Standard).where(Standard.code==item['code']))
+        examinable = item.get('examinable', True)
+        description = item.get('note') or f"DipIFR coverage aligned to the current study guide: {item['title']}."
         if not obj:
-            obj=Standard(code=item['code'], title=item['title'], description=f"DipIFR coverage aligned to the current study guide: {item['title']}.")
+            obj=Standard(code=item['code'], title=item['title'], description=description, examinable=examinable)
             db.add(obj); db.flush()
+        else:
+            # Keep examinable/description in sync with the catalog on every
+            # restart, so a correction like "IFRS S1/S2 aren't examinable"
+            # takes effect for existing databases too, not just fresh ones.
+            obj.examinable = examinable
+            obj.description = description
         standard_map[item['code']]=obj
         for idx,title in enumerate(item['topics'],1):
             code=f"{item['code'].replace(' ','-').replace('/','-').lower()}-{idx}"
@@ -1516,11 +1527,40 @@ def seed_if_empty(db: Session) -> None:
             'source is available; use this item for exam simulation and analysis.'
         )
         rubric_keywords = ','.join(real_keywords)
-        # Conservative standard tagging based on the actual question text. Q1 is consolidation-heavy; other questions use keyword matching.
+        # Standard tagging based on our own topic keywords (not the copyrighted question
+        # text, which is no longer stored — see the sanitisation note on PAST_QUESTIONS).
         candidates=[]
-        upper=text.upper()
+        upper=' '.join(real_keywords).upper()
         keyword_map=[
-            ('IFRS 15',['IFRS 15','REVENUE FROM CONTRACTS']),('IFRS 16',['IFRS 16','LEASE']),('IFRS 9',['IFRS 9','FINANCIAL INSTRUMENT']),('IFRS 2',['IFRS 2','SHARE-BASED']),('IAS 12',['IAS 12','DEFERRED TAX']),('IAS 19',['IAS 19','EMPLOYEE BENEFIT']),('IAS 33',['IAS 33','EARNINGS PER SHARE']),('IAS 37',['IAS 37','PROVISION']),('IAS 36',['IAS 36','IMPAIRMENT']),('IAS 16',['IAS 16','PROPERTY, PLANT']),('IAS 38',['IAS 38','INTANGIBLE']),('IAS 21',['IAS 21','FOREIGN CURRENCY']),('IAS 41',['IAS 41','AGRICULTURE']),('IFRS 5',['IFRS 5','HELD FOR SALE']),('IFRS 3',['IFRS 3','BUSINESS COMBINATION']),('IFRS 10',['IFRS 10','CONSOLIDATED']),('IAS 28',['IAS 28','ASSOCIATE']),('IFRS 11',['IFRS 11','JOINT ARRANGEMENT']),('IFRS 13',['IFRS 13','FAIR VALUE']),('IAS 40',['IAS 40','INVESTMENT PROPERTY']),('IAS 20',['IAS 20','GOVERNMENT GRANT']),('IFRS 6',['IFRS 6','EXPLORATION']),('IAS 24',['IAS 24','RELATED PARTY']),('IFRS 8',['IFRS 8','OPERATING SEGMENT']),('IAS 10',['IAS 10','EVENTS AFTER']),('IAS 8',['IAS 8','ACCOUNTING POLICY']),('IFRS 18',['IFRS 18','OPERATING CATEGORY']),('IFRS 19',['IFRS 19','REDUCED DISCLOSURES'])]
+            ('IFRS 15',['PERFORMANCE OBLIGATION','TRANSACTION PRICE','VARIABLE CONSIDERATION','REVENUE FROM CONTRACT']),
+            ('IFRS 16',['LESSOR','LESSEE','RIGHT-OF-USE','LEASE LIABILIT']),
+            ('IFRS 9',['FINANCIAL INSTRUMENT','AMORTISED COST','FAIR VALUE THROUGH','FINANCIAL ASSET','FINANCIAL LIABILIT','EXPECTED CREDIT LOSS']),
+            ('IFRS 2',['SHARE OPTION','SHARE-BASED','SHARE BASED']),
+            ('IAS 12',['DEFERRED TAX']),
+            ('IAS 19',['EMPLOYEE BENEFIT','DEFINED BENEFIT','PENSION']),
+            ('IAS 33',['EARNINGS PER SHARE']),
+            ('IAS 37',['PROVISION','CONTINGENT LIABILIT','CONTINGENT ASSET']),
+            ('IAS 36',['IMPAIRMENT','RECOVERABLE AMOUNT','CASH-GENERATING','CASH GENERATING']),
+            ('IAS 16',['PROPERTY, PLANT','DEPRECIATION']),
+            ('IAS 38',['INTANGIBLE ASSET']),
+            ('IAS 21',['EXCHANGE RATE','TRANSLAT','FUNCTIONAL CURRENCY','FOREIGN OPERATION']),
+            ('IAS 41',['AGRICULTUR','BIOLOGICAL ASSET']),
+            ('IFRS 5',['HELD FOR SALE','DISCONTINUED OPERATION']),
+            ('IFRS 3',['BUSINESS COMBINATION','GOODWILL','BARGAIN PURCHASE']),
+            ('IFRS 10',['CONSOLIDAT','NON-CONTROLLING INTEREST','SUBSIDIAR']),
+            ('IAS 28',['ASSOCIATE','SIGNIFICANT INFLUENCE','EQUITY METHOD']),
+            ('IFRS 11',['JOINT ARRANGEMENT','JOINT VENTURE','JOINT OPERATION']),
+            ('IFRS 13',['FAIR VALUE MEASUREMENT','LEVEL 1','LEVEL 2','LEVEL 3']),
+            ('IAS 40',['INVESTMENT PROPERTY']),
+            ('IAS 20',['GOVERNMENT GRANT']),
+            ('IFRS 6',['EXPLORATION FOR','EVALUATION OF MINERAL']),
+            ('IAS 24',['RELATED PART','KEY MANAGEMENT PERSONNEL']),
+            ('IFRS 8',['OPERATING SEGMENT']),
+            ('IAS 10',['ADJUSTING EVENT','EVENTS AFTER']),
+            ('IAS 8',['ACCOUNTING POLIC','ACCOUNTING ESTIMATE','PRIOR PERIOD ERROR']),
+            ('IAS 2',['INVENTOR','NET REALISABLE VALUE']),
+            ('IAS 1',['OTHER COMPREHENSIVE INCOME']),
+        ]
         for code,keys in keyword_map:
             if any(k in upper for k in keys): candidates.append(code)
         if row['question_number']==1 and not candidates: candidates=['IFRS 10']

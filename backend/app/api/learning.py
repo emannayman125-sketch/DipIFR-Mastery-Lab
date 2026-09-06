@@ -115,13 +115,22 @@ async def submit_practice(
     if not question:
         raise HTTPException(status_code=404, detail="Question not found")
 
-    ai_result = await grade_answer_with_ai(question.prompt, question.model_answer, data.answer_text)
-    if ai_result:
-        score_percent, feedback = ai_result
-        graded_by_ai = True
-    else:
+    # Past-exam-sourced questions no longer store ACCA's real question text or
+    # suggested answer (removed for copyright reasons — see seed_data.py), so
+    # there's nothing meaningful left to hand the AI as "the model answer" for
+    # those. Grade them with our own keyword rubric instead of risking a
+    # nonsense AI comparison against a placeholder.
+    if question.source == "past_exam":
         score_percent, feedback = keyword_grade(data.answer_text, question.rubric_keywords)
         graded_by_ai = False
+    else:
+        ai_result = await grade_answer_with_ai(question.prompt, question.model_answer, data.answer_text)
+        if ai_result:
+            score_percent, feedback = ai_result
+            graded_by_ai = True
+        else:
+            score_percent, feedback = keyword_grade(data.answer_text, question.rubric_keywords)
+            graded_by_ai = False
 
     related = _linked_standard_codes(db, question)
 
