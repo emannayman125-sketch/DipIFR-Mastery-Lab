@@ -7,6 +7,7 @@ class StandardOut(BaseModel):
     description: str
     question_count: int
     mastery: int = 0
+    examinable: bool = True
 
 class QuestionBankItem(BaseModel):
     id: int

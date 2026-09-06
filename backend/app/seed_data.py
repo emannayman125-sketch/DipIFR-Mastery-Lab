@@ -822,298 +822,111 @@ FLAGSHIP_INTEGRATED_3 = [
         ],
     ),
     (
-        "IFRS S1", ["IFRS S2"],
-        "Gamma's directors are preparing their first sustainability-related disclosures alongside the "
-        "financial statements and ask you to explain the new ISSB requirements. Required: (a) Explain "
-        "the overall objective of IFRS S1 and the four content areas (governance, strategy, risk "
-        "management, metrics and targets) it requires disclosures to be organised around. (b) Explain how "
-        "IFRS S2 relates to IFRS S1 and what additional matters it specifically requires disclosure of. "
-        "(c) Explain the concept of connectivity between an entity's sustainability-related financial "
-        "disclosures and its financial statements.",
-        "(a) IFRS S1 requires an entity to disclose information about sustainability-related risks and "
-        "opportunities that could reasonably be expected to affect its cash flows, access to finance, or "
-        "cost of capital over the short, medium and long term, so that users of general purpose "
-        "financial reports can assess these effects. Disclosures are organised around four content "
-        "areas: governance (the processes used to monitor and manage sustainability-related risks and "
-        "opportunities), strategy (the approach to managing them), risk management (the processes to "
-        "identify, assess, prioritise and monitor them), and metrics and targets (the entity's "
-        "performance, including progress towards any targets). (b) IFRS S2 applies IFRS S1's four "
-        "content areas specifically to climate-related risks and opportunities, requiring more detailed "
-        "disclosures such as an entity's exposure to climate-related physical and transition risks, "
-        "greenhouse gas emissions (using the Greenhouse Gas Protocol), and climate-related targets; "
-        "IFRS S1 sets the general framework, and IFRS S2 is the first standard developed under it, "
-        "applied together for climate matters specifically. (c) Connectivity means sustainability-"
-        "related financial disclosures should be presented in a way that enables users to understand the "
-        "connections between them and the related financial statements, for example by using consistent "
-        "inputs and assumptions where relevant and disclosing information at the same time as the "
-        "financial statements, so that sustainability information is not viewed in isolation from the "
-        "entity's overall financial position and performance.",
-        "sustainability-related risks and opportunities,governance,strategy,risk management,metrics and "
-        "targets,IFRS S2,climate-related disclosures,greenhouse gas emissions,connectivity",
-        "Explain the ISSB's general sustainability disclosure framework (IFRS S1) and its climate-"
-        "specific companion standard (IFRS S2), including the connectivity principle linking them to the "
-        "financial statements.",
+        "IAS 7", ["IFRS 10"],
+        "Zeta Group's draft consolidated statement of profit or loss for the year ended 31 December "
+        "20X5 shows profit before tax of $18 million, including finance costs of $1.2 million, a "
+        "depreciation charge of $3.4 million, and a profit on disposal of an item of plant of $0.5 "
+        "million (cash proceeds of $2.1 million). During the year, Zeta's 80%-owned subsidiary paid a "
+        "dividend of $1 million, of which $0.2 million was paid to the non-controlling interest. "
+        "Required: (a) Explain why the depreciation charge and the profit on disposal must be adjusted "
+        "for in the operating activities section of the consolidated statement of cash flows when using "
+        "the indirect method, and state where the $2.1 million disposal proceeds are presented instead. "
+        "(b) Explain how the dividend paid to the non-controlling interest should be presented in the "
+        "consolidated statement of cash flows, distinguishing it from a dividend paid by the parent to "
+        "its own shareholders. (c) Starting from profit before tax, calculate cash generated from "
+        "operations before working capital movements.",
+        "(a) Depreciation is a non-cash expense that reduced profit but caused no cash outflow in the "
+        "period, so it is added back to profit before tax when reconciling profit to operating cash "
+        "flow. The profit on disposal is deducted because it is a non-operating gain already included "
+        "in profit before tax; the full cash proceeds of $2.1 million from the disposal are instead "
+        "presented as a single amount under investing activities, so the transaction is reported once, "
+        "in the correct section, rather than partly misclassified as an operating cash flow. (b) The "
+        "dividend paid to the non-controlling interest ($0.2 million) is cash leaving the group to a "
+        "party outside it and is presented as a separate line within financing activities in the "
+        "consolidated statement of cash flows. This is shown separately from any dividend paid by the "
+        "parent to its own shareholders (also a financing outflow) because users of the consolidated "
+        "statement need to see how much cash left the group to non-controlling shareholders of a "
+        "subsidiary as distinct from what the parent paid to its own equity holders. (c) Cash generated "
+        "from operations before working capital movements: profit before tax $18.0m + finance costs "
+        "$1.2m (added back, isolated for separate presentation) + depreciation $3.4m (non-cash add-back) "
+        "− profit on disposal $0.5m (non-operating item removed) = $22.1 million.",
+        "depreciation,non-cash,profit on disposal,investing activities,dividend,non-controlling "
+        "interest,financing activities,indirect method,cash generated from operations,finance costs",
+        "Apply IAS 7 to prepare the operating-activities reconciliation of a consolidated statement of "
+        "cash flows, correctly handling non-cash adjustments, a disposal, and a dividend paid to the "
+        "non-controlling interest.",
         [
-            ("IFRS S1 objective explained", 6, "Effects on cash flows, access to finance, cost of capital over short/medium/long term"),
-            ("Four content areas explained", 8, "Governance, strategy, risk management, metrics and targets all correctly described"),
-            ("IFRS S2's relationship to IFRS S1", 6, "Applies the same four areas specifically to climate; first standard under the S1 framework"),
-            ("Connectivity concept explained", 5, "Sustainability disclosures linked to financial statements, not viewed in isolation"),
+            ("Depreciation add-back explained", 5, "Non-cash expense reducing profit without a corresponding cash outflow"),
+            ("Profit on disposal treatment explained", 6, "Deducted from profit as a non-operating item already in profit before tax; full $2.1m proceeds shown separately under investing activities"),
+            ("NCI dividend classification explained", 6, "The $0.2m paid to the NCI is a separate line within financing activities, distinct from dividends paid by the parent to its own shareholders"),
+            ("Cash generated from operations before working capital changes calculated correctly", 8, "$18.0m + $1.2m + $3.4m − $0.5m = $22.1 million"),
         ],
     ),
 ]
 
 # ---------------------------------------------------------------------------
-# Real ACCA DipIFR past-exam questions on IAS 16 / IAS 23, sourced from the
-# user's own compiled study spreadsheet covering sessions not previously in
-# the platform's bank: December 2017, June 2018, September 2020, December
-# 2020, December 2021, June 2022 and June 2023. Each retains its real
-# session as `source_round` for academic-integrity citation, and a
-# calculation-driven model answer structured to match spreadsheet-mode
-# working, since these are the standards students most often solve on a
-# grid rather than in prose.
+# Real ACCA DipIFR past-exam questions on IAS 16 / IAS 23, originally sourced
+# from the user's own compiled study spreadsheet covering sessions not
+# previously in the platform's bank: December 2017, June 2018, September
+# 2020, December 2020, December 2021, June 2022 and June 2023.
+#
+# SANITISED: this block previously stored ACCA's actual copyrighted question
+# text and a full worked model answer (with the real exam's specific figures)
+# directly in source control. Both have been replaced with our own factual
+# pointer to where the real question and ACCA's own suggested answer can be
+# read officially, plus the genuine topic keywords, following the same
+# approach used for backend/app/data/past_exam_questions.json. Grading for
+# these questions therefore also runs through the keyword rubric rather than
+# an AI comparison (see the `question.source == "past_exam"` branches in
+# api/learning.py and api/exams.py).
 # ---------------------------------------------------------------------------
+_PAST_PAPERS_PAGE = "https://www.accaglobal.com/gb/en/student/exam-support-resources/dipifr-study-resources/past-examinations.html"
+
+
+def _sanitised_past_exam_prompt(session: str, qnum, marks: int, keywords: str, report_link: str | None = None) -> str:
+    q_label = f"Question {qnum}" if qnum else "a question"
+    extra = f"\nRead the examiner's report for this sitting: {report_link}\n" if report_link else ""
+    return (
+        f"This is {q_label} from the ACCA DipIFR exam sitting '{session}' ({marks} marks). "
+        f"To respect ACCA's copyright, the original question text is not reproduced on this platform.\n\n"
+        f"Open the official question paper here: {_PAST_PAPERS_PAGE}\n{extra}\n"
+        f"Read the question there, then come back and write your answer below. "
+        f"This question mainly tests: {keywords}."
+    )
+
+
+def _sanitised_past_exam_answer(report_link: str | None = None) -> str:
+    extra = f" and a detailed examiner's report at: {report_link}" if report_link else ""
+    return (
+        f"No official ACCA suggested answer is reproduced here for copyright reasons. "
+        f"ACCA publishes its own suggested solution alongside this past paper at: {_PAST_PAPERS_PAGE}{extra}. "
+        f"Compare your answer against it once you've attempted it."
+    )
+
+
+# (primary standard, related standards, session, question number, marks, topic keywords, examiner's report link or None)
 REAL_SESSION_IAS16_23 = [
-    (
-        "IAS 16", ["IAS 37"], "December 2017", 2, 9,
-        "On 1 April 20X4, Delta completed the construction of a power generating facility. The total "
-        "construction cost was $20 million. The facility was capable of being used from 1 April 20X4 but "
-        "Delta did not bring the facility into use until 1 July 20X4. The estimated useful life of the "
-        "facility at 1 April 20X4 was 40 years. Under legal regulations in the jurisdiction in which "
-        "Delta operates, there are no requirements to restore the land on which power generating "
-        "facilities stand to its original state at the end of the useful life of the facility. However, "
-        "Delta has a reputation for conducting its business in an environmentally friendly way and has "
-        "previously chosen to restore similar land even in the absence of such legal requirements. The "
-        "directors of Delta estimated that the cost of restoring the land in 40 years' time (based on "
-        "prices prevailing at that time) would be $10 million. A relevant annual discount rate to use in "
-        "any discounting calculations is 5%. When the annual discount rate is 5%, the present value of "
-        "$1 receivable in 40 years' time is approximately 14.2 cents. Required: Explain and show how the "
-        "two events would be reported in the financial statements of Delta for the year ended 30 "
-        "September 20X4. When considering the reporting of events in the statement of comprehensive "
-        "income, you should distinguish between events being reported in profit or loss from events "
-        "being reported in other comprehensive income, where this is relevant.",
-        "Even without a legal obligation, Delta's consistent past practice of restoring similar land "
-        "creates a constructive obligation under IAS 37, so a decommissioning provision must be "
-        "recognised and included in the initial cost of the asset under IAS 16, discounted to present "
-        "value. Depreciation begins when the asset is ready for its intended use (1 April 20X4), not "
-        "when it is actually brought into use (1 July 20X4) — a common exam trap.\n\n"
-        "Workings (spreadsheet-style):\n"
-        "\tItem\tAmount ($'000)\n"
-        "1\tConstruction cost\t20,000\n"
-        "2\tRestoration cost (future value)\t10,000\n"
-        "3\tPresent value factor (5%, 40 yrs)\t0.142\n"
-        "4\tRestoration cost (present value) = 10,000 x 0.142\t1,420\n"
-        "5\tTotal initial cost of asset (1+4)\t21,420\n"
-        "6\tUseful life (years)\t40\n"
-        "7\tDepreciation from 1 April 20X4 (ready for use), 6 months to 30 Sep 20X4 = 21,420/40 x 6/12\t268\n"
-        "8\tCarrying amount at 30 Sep 20X4 (5-7)\t21,152\n"
-        "9\tUnwinding of discount for the period (provision x 5% x 6/12, approx.)\t36\n"
-        "10\tProvision carried at year end (4+9)\t1,456\n\n"
-        "The $268 depreciation charge and the $36 unwinding-of-discount finance cost both go through "
-        "profit or loss; there is no other comprehensive income impact here since this is the cost "
-        "model, not a revaluation.",
-        "constructive obligation,decommissioning provision,present value,discount rate,initial cost,"
-        "ready for use,depreciation,unwinding of discount,finance cost,profit or loss",
-        20,
-    ),
-    (
-        "IAS 16", [], "June 2018", 4, 6,
-        "When reading the accounting policies note in the consolidated financial statements, a director "
-        "notices that freehold properties are measured using the fair value (revaluation) model but "
-        "plant and equipment is measured using the cost model, even though both are shown within a "
-        "single 'property, plant and equipment' line in the statement of financial position. The "
-        "director queries why it is acceptable to measure different parts of property, plant and "
-        "equipment using two different measurement models, and suggests going further by using the fair "
-        "value model only for readily accessible properties and the cost model for properties in remote "
-        "locations, to save time and cost. Required: Respond to the director's query, explaining the "
-        "requirements of IAS 16 in this area.",
-        "IAS 16 requires the measurement model (cost or revaluation) to be chosen on a class-by-class "
-        "basis, not asset-by-asset — this is why freehold properties (one class) and plant and equipment "
-        "(a different class) can validly use different models, since they are different classes of "
-        "asset. However, the director's suggestion of splitting properties themselves — using fair value "
-        "for accessible properties and cost for remote ones — is not permitted: this would mean applying "
-        "two different measurement models within the same class of asset (properties), which IAS 16 does "
-        "not allow purely for cost or convenience reasons. All items within a class must be measured "
-        "using the same model to maintain comparability and prevent selective revaluation.",
-        "class-by-class basis,measurement model,cost model,revaluation model,same class,comparability,"
-        "selective revaluation not permitted",
-        10,
-    ),
-    (
-        "IAS 16", [], "September 2020", None, 8,
-        "Both Alpha and Beta measure their property, plant and equipment (PPE) using the revaluation "
-        "model, with remeasurement occurring at the end of each financial year. Alpha previously "
-        "recorded net revaluation losses of $3.5 million, accounted for under IAS 16. For the year ended "
-        "31 March 20X5, Alpha recorded remeasurement gains of $5 million relating to properties that had "
-        "previously suffered losses. Beta, on the other hand, has only ever recorded revaluation gains, "
-        "with all depreciation and impairments of PPE recognised in cost of sales. Required: Explain how "
-        "Alpha's revaluation gain should be recognised, and comment on whether Beta's policy of "
-        "recognising all depreciation and impairments in cost of sales is consistent with IAS 16.",
-        "Under IAS 16, a revaluation gain is recognised in other comprehensive income and accumulated in "
-        "a revaluation surplus, except to the extent that it reverses a revaluation decrease of the same "
-        "asset previously recognised in profit or loss, in which case the reversal is recognised in "
-        "profit or loss to that extent. For Alpha: of the $5 million gain, $3.5 million reverses the "
-        "previous loss recognised in profit or loss (cost of sales/similar) and should therefore be "
-        "recognised in profit or loss; the remaining $1.5 million is recognised in other comprehensive "
-        "income.\n\n"
-        "Workings:\n\tItem\tAmount ($'000)\n1\tAlpha prior revaluation loss (recognised in P&L)\t-3,500\n"
-        "2\tAlpha current year revaluation gain\t5,000\n3\tPortion reversing prior loss, to P&L (min of 1 and 2)\t3,500\n"
-        "4\tRemaining portion, to OCI (2-3)\t1,500\n\n"
-        "Beta's policy of recognising all impairments in cost of sales is generally consistent with IAS "
-        "16/IAS 36 (impairment losses on a revalued asset are recognised in OCI only to the extent of any "
-        "revaluation surplus for that asset, with any excess to profit or loss). However, recognising "
-        "*all* depreciation in cost of sales is a presentation choice within profit or loss and does not "
-        "in itself breach IAS 16, provided depreciation is still calculated correctly on the revalued "
-        "carrying amount.",
-        "revaluation gain,other comprehensive income,reversal of previous loss,profit or loss,"
-        "revaluation surplus,impairment,cost of sales",
-        16,
-    ),
-    (
-        "IAS 16", ["IAS 23"], "December 2020", None, 15,
-        "On 1 November 20X4, Gamma placed an order for machinery for a new business venture. The initial "
-        "cost was $30 million, delivered on 30 November 20X4. The machine required further development "
-        "and installation at Gamma's premises, carried out by the supplier from 1 December 20X4 to 30 "
-        "April 20X5, at an additional cost of $60 million; Gamma paid the total $90 million (net of two "
-        "months' credit) on 30 June 20X5. Following installation, employees attended a training course "
-        "completed on 15 May 20X5 at a cost of $1 million. A government safety certificate, legally "
-        "required before the machinery could be used, was issued on 31 May 20X5 at a cost of $600,000, "
-        "paid 30 June 20X5. Due to economic uncertainty, the machinery was not brought into use until 31 "
-        "July 20X5. The venture qualifies for a preferential 12-month loan at 4% per annum, available "
-        "only on 1 November each year; Gamma borrowed $90 million on 1 November 20X4 and repaid it with "
-        "accrued interest on 31 October 20X5. The estimated useful life of the machinery is ten years, "
-        "but its engine (current replacement cost $24 million; estimated replacement cost in five years' "
-        "time $30 million) will need replacing after five years. Required: Explain and show how these "
-        "events would be reported in Gamma's financial statements for the year ended 30 September 20X5.",
-        "The machine (excluding the separately-identifiable engine component) and its installation costs "
-        "and safety certificate are capitalised under IAS 16, since they are necessary to bring the asset "
-        "to the location and condition for its intended operation; training costs are not capitalisable "
-        "and are expensed. Borrowing costs on the specific qualifying-asset loan are capitalised while "
-        "construction/installation activities are in progress. The engine must be depreciated separately "
-        "from the rest of the machine (component depreciation) because it has a materially different "
-        "useful life. Depreciation begins when the asset is ready for use (after installation and safety "
-        "certification), not when actually brought into use.\n\n"
-        "Workings:\n\tItem\tAmount ($'000)\n1\tInitial cost\t30,000\n2\tInstallation/development cost\t60,000\n"
-        "3\tSafety certificate cost (capitalised)\t600\n4\tTraining cost (expensed, not capitalised)\t1,000\n"
-        "5\tBorrowing cost capitalised (90,000 x 4% x 6/12, Dec-May activities in progress)\t1,800\n"
-        "6\tTotal capitalised cost (1+2+3+5)\t92,400\n"
-        "7\tEngine component (current replacement cost, used as proxy for allocation)\t24,000\n"
-        "8\tRemaining asset component (6-7)\t68,400\n"
-        "9\tEngine depreciation (24,000/5 years)\t4,800 per year\n"
-        "10\tRemaining asset depreciation (68,400/10 years)\t6,840 per year\n\n"
-        "Only a proportion of a full year's depreciation is charged from the date the asset was ready for "
-        "use to the 30 September 20X5 year end. The $1 million training cost is expensed to profit or "
-        "loss as incurred.",
-        "capitalised installation cost,safety certificate,training cost expensed,borrowing cost "
-        "capitalised,qualifying asset,component depreciation,separate useful life,ready for use",
-        25,
-    ),
-    (
-        "IAS 16", ["IAS 37"], "December 2021", None, 15,
-        "On 1 November 20X4, Gamma commenced construction of a power plant at a total cost of $30 "
-        "million, completed 28 February 20X5, and brought into use 31 March 20X5. The estimated useful "
-        "life is 20 years from the date it is first depreciated. Construction caused environmental "
-        "damage; the directors estimate rectification at the end of the plant's useful life would cost "
-        "$20 million. There is no legal requirement to carry out this work, but Gamma has always "
-        "rectified environmental damage it has caused in the past, regardless of legal obligation. An "
-        "appropriate discount rate is 8% per annum; the present value of $1 payable in 20 years' time at "
-        "this rate is approximately 21 cents. Required: Explain and show how these events would be "
-        "reported in Gamma's financial statements for the year ended 30 September 20X5.",
-        "As in the December 2017-style scenario, Gamma's consistent past practice of rectifying "
-        "environmental damage even without a legal obligation creates a constructive obligation under "
-        "IAS 37, requiring a decommissioning provision included in the initial cost of the asset at "
-        "present value. Depreciation begins from the date the asset is ready for its intended use (28 "
-        "February 20X5, when construction completed), not the later date it was actually brought into "
-        "use (31 March 20X5).\n\n"
-        "Workings:\n\tItem\tAmount ($'000)\n1\tConstruction cost\t30,000\n2\tRectification cost (future "
-        "value)\t20,000\n3\tPresent value factor (8%, 20 yrs)\t0.21\n4\tRectification cost (present "
-        "value) = 20,000 x 0.21\t4,200\n5\tTotal initial cost (1+4)\t34,200\n6\tUseful life (years)\t20\n"
-        "7\tDepreciation from 28 Feb 20X5 (ready for use), approx. 7 months to 30 Sep 20X5 = "
-        "34,200/20 x 7/12\t998\n8\tCarrying amount at year end (5-7)\t33,202\n"
-        "9\tUnwinding of discount for the period (provision x 8% x 7/12, approx.)\t196\n"
-        "10\tProvision carried at year end (4+9)\t4,396\n\n"
-        "The double entry for the unwinding of the discount is Dr Finance cost (profit or loss), Cr "
-        "Provision — the finance cost is charged to profit or loss each period as the provision accretes "
-        "towards its eventual settlement amount.",
-        "constructive obligation,decommissioning provision,present value,ready for use,depreciation,"
-        "unwinding of discount,finance cost,provision",
-        20,
-    ),
-    (
-        "IAS 16", ["IAS 23"], "June 2022", None, 12,
-        "On 1 August 20X4, Alpha began constructing a power plant at a cost of $60 million, completed 30 "
-        "November 20X4 and available for use from that date, though it was not brought into use (after a "
-        "formal opening ceremony) until 1 January 20X5. The estimated useful life is 10 years. Alpha "
-        "borrowed $60 million on 1 July 20X4 specifically to finance the construction, at 8% per annum "
-        "interest payable in arrears on 30 June each year. At 31 March 20X5, Alpha's draft PPE figure "
-        "incorrectly included $62.01 million for the power plant, made up of the $60 million construction "
-        "cost, $3.6 million of finance cost on the loan calculated over 9 months (1 July 20X4 to 31 March "
-        "20X5), less $1.59 million of depreciation calculated from 1 January 20X5 (3 months) at 63,600/10 "
-        "x 3/12. Required: Identify and correct the errors in the draft PPE figure.",
-        "Two errors exist in the draft calculation. First, borrowing costs should only be capitalised "
-        "while construction is actively in progress — capitalisation must cease when the asset is "
-        "substantially complete and ready for use (30 November 20X4), not continue for the full 9 months "
-        "to 31 March 20X5. Second, depreciation should begin from when the asset is ready for its "
-        "intended use (30 November 20X4), not from when it was actually brought into use after the "
-        "opening ceremony (1 January 20X5).\n\n"
-        "Workings (corrected):\n\tItem\tAmount ($'000)\n1\tConstruction cost\t60,000\n"
-        "2\tBorrowing cost capitalised, 1 Jul-30 Nov 20X4 only (4 months) = 60,000 x 8% x 4/12\t1,600\n"
-        "3\tCorrected total cost (1+2)\t61,600\n4\tDepreciation from 30 Nov 20X4 (4 months to 31 Mar "
-        "20X5) = 61,600/10 x 4/12\t2,053\n5\tCorrected carrying amount (3-4)\t59,547\n"
-        "6\tOriginally recognised (per draft)\t62,010\n7\tOverstatement to correct (6-5)\t2,463\n\n"
-        "The correcting entry is Dr Retained earnings, Cr Property, plant and equipment for $2.463 "
-        "million, reflecting both the excess borrowing cost wrongly capitalised for the 5 months after "
-        "completion and the depreciation that should have been charged from 30 November rather than 1 "
-        "January.",
-        "borrowing cost capitalisation ceases,substantially complete,ready for use,depreciation start "
-        "date,brought into use is irrelevant,correcting entry,retained earnings",
-        20,
-    ),
-    (
-        "IAS 16", ["IAS 20", "IAS 37"], "June 2023", None, 20,
-        "Theta constructed a fertiliser plant. Materials ($4 million), directly related production "
-        "overheads ($2 million), and construction staff salaries from 1 January to 30 June 20X5 ($3 "
-        "million, at $500,000/month) were incurred during construction, which completed 1 March 20X5. "
-        "Theta also wants to include: a general administrative overhead allocation of $1 million (using "
-        "its normal overhead model), staff training costs of $600,000, plant-testing costs of $200,000, "
-        "and opening-ceremony costs of $250,000. The plant could have operated from 1 April 20X5 but the "
-        "opening ceremony was held in late April; small-scale production began 15 May 20X5, with full "
-        "capacity from 1 July 20X5. The estimated useful life is 20 years, depreciated from 1 July 20X5 "
-        "per management's (incorrect) instruction. Separately, Theta borrowed $8 million on 1 December "
-        "20X4 to partly finance construction, receiving a net $7.8 million after a $200,000 lending fee; "
-        "management wants to show the loan at $8 million and the fee separately capitalised into PPE, "
-        "with no adjustment for the $8.52 million total repayable on 30 November 20X5. The construction "
-        "also caused environmental damage; a $10 million rectification cost is estimated in 20 years, "
-        "with no legal obligation, but management (again incorrectly) wants no recognition of this at "
-        "all, despite Theta's established practice of rectifying such damage. Required: Explain and "
-        "correct management's proposed accounting treatment of the plant's cost, the loan, the "
-        "depreciation start date, and the environmental damage.",
-        "Several of management's instructions are incorrect under IFRS and must be corrected. Materials, "
-        "directly related production overheads, and construction-period salaries are correctly "
-        "capitalisable directly attributable costs. However: general administrative overheads are "
-        "explicitly excluded from PPE cost under IAS 16 and must be expensed; training costs are not "
-        "part of bringing the asset to its intended condition and must be expensed; testing costs "
-        "necessary to ensure the asset is capable of operating as intended ARE capitalisable (this is a "
-        "necessary cost, unlike training); opening-ceremony/promotional costs are explicitly excluded by "
-        "IAS 16 and must be expensed. Depreciation must begin when the asset is ready for its intended "
-        "use (1 April 20X5, when small-scale operation was possible), not the later full-capacity date "
-        "management proposed. The loan should be shown net of the lending fee (an integral part of the "
-        "effective interest calculation under IFRS 9, not a PPE cost) at amortised cost, not $8 million "
-        "gross with the fee separately capitalised. The environmental damage does create a constructive "
-        "obligation given Theta's established practice, so a discounted provision must be recognised and "
-        "added to the asset's cost under IAS 37/IAS 16 — management's instruction to ignore it entirely "
-        "is incorrect.\n\n"
-        "Workings (corrected capitalisable cost):\n\tItem\tAmount ($'000)\n1\tMaterials\t4,000\n"
-        "2\tProduction overheads\t2,000\n3\tConstruction salaries\t3,000\n4\tTesting costs (capitalisable)\t200\n"
-        "5\tSubtotal directly attributable costs (1-4)\t9,200\n6\tGeneral admin overhead (excluded, expensed)\t1,000\n"
-        "7\tTraining cost (excluded, expensed)\t600\n8\tOpening ceremony cost (excluded, expensed)\t250\n"
-        "9\tEnvironmental provision, present value (10,000 x 15%)\t1,500\n"
-        "10\tCorrected total PPE cost (5+9)\t10,700\n"
-        "11\tDepreciation should start\t1 April 20X5 (ready for use), not 1 July",
-        "directly attributable costs,general administrative overheads excluded,training costs excluded,"
-        "testing costs capitalised,promotional costs excluded,ready for use,constructive obligation,"
-        "environmental provision,amortised cost,lending fee",
-        25,
-    ),
+    ("IAS 16", ["IAS 37"], "December 2017", 2, 9,
+     "constructive obligation,decommissioning provision,present value,discount rate,initial cost,ready for use,depreciation,unwinding of discount,finance cost,profit or loss",
+     None),
+    ("IAS 16", [], "June 2018", 4, 6,
+     "class-by-class basis,measurement model,cost model,revaluation model,same class,comparability,selective revaluation not permitted",
+     None),
+    ("IAS 16", [], "September 2020", None, 8,
+     "revaluation gain,other comprehensive income,reversal of previous loss,profit or loss,revaluation surplus,impairment,cost of sales",
+     None),
+    ("IAS 16", ["IAS 23"], "December 2020", None, 15,
+     "capitalised installation cost,safety certificate,training cost expensed,borrowing cost capitalised,qualifying asset,component depreciation,separate useful life,ready for use",
+     None),
+    ("IAS 16", ["IAS 37"], "December 2021", None, 15,
+     "constructive obligation,decommissioning provision,present value,ready for use,depreciation,unwinding of discount,finance cost,provision",
+     "https://www.accaglobal.com/content/dam/acca/global/PDF-students/ifr/ifrint/examreports/DipIFR%20D21%20examiner's%20report.pdf"),
+    ("IAS 16", ["IAS 23"], "June 2022", None, 12,
+     "borrowing cost capitalisation ceases,substantially complete,ready for use,depreciation start date,brought into use is irrelevant,correcting entry,retained earnings",
+     "https://www.accaglobal.com/content/dam/acca/global/PDF-students/ifr/ifrint/examreports/dipifr%20examiner's%20report%20june%202022.pdf"),
+    ("IAS 16", ["IAS 20", "IAS 37"], "June 2023", None, 20,
+     "directly attributable costs,general administrative overheads excluded,training costs excluded,testing costs capitalised,promotional costs excluded,ready for use,constructive obligation,environmental provision,amortised cost,lending fee",
+     "https://www.accaglobal.com/content/dam/acca/global/PDF-students/ifr/ifrint/examreports/DipIFR%20examiner's%20report%20June%202023.pdf"),
 ]
 
 # ---------------------------------------------------------------------------
@@ -1310,8 +1123,9 @@ ORIGINAL_QUESTIONS = [
 ("IFRS 8","segments","Explain how operating segments are identified and how reportable segments are determined.","Operating segments are components regularly reviewed by the chief operating decision maker; reportable segments are determined using aggregation criteria and quantitative thresholds.","operating segment,CODM,aggregation,quantitative thresholds",10,"medium"),
 ("IFRS for SMEs","SME reporting","Explain why a separate IFRS for SMEs Accounting Standard exists and how it addresses differential reporting.","The standard reduces complexity and disclosure burden for eligible entities without public accountability while retaining useful information for users.","SME,differential reporting,public accountability,disclosure",10,"easy"),
 ("IFRS 19","reduced disclosures","Explain when a subsidiary can apply the reduced disclosure requirements of IFRS 19.","An eligible subsidiary meeting the standard's conditions may apply reduced disclosures while continuing to recognise and measure items using IFRS Accounting Standards.","eligible subsidiary,reduced disclosures,recognition,measurement",10,"medium"),
-("IFRS S1","sustainability","Explain the objective and core content of IFRS S1 sustainability-related financial disclosures.","IFRS S1 is designed to provide decision-useful information about sustainability-related risks and opportunities that could reasonably be expected to affect cash flows, access to finance or cost of capital.","sustainability risks,opportunities,core content,material information",10,"medium"),
-("IFRS S2","climate","Explain the role of climate-related risk and opportunity disclosures under IFRS S2.","IFRS S2 focuses on climate-related risks and opportunities and builds disclosures around governance, strategy, risk management, and metrics and targets.","climate risks,opportunities,governance,strategy,metrics,targets",10,"medium"),
+("IFRS S1","sustainability [not examinable in DipIFR]","This topic is not part of the examinable ACCA DipIFR syllabus — included for general awareness only. Explain the objective and core content of IFRS S1 sustainability-related financial disclosures.","IFRS S1 is designed to provide decision-useful information about sustainability-related risks and opportunities that could reasonably be expected to affect cash flows, access to finance or cost of capital.","sustainability risks,opportunities,core content,material information",10,"medium"),
+("IFRS S2","climate [not examinable in DipIFR]","This topic is not part of the examinable ACCA DipIFR syllabus — included for general awareness only. Explain the role of climate-related risk and opportunity disclosures under IFRS S2.","IFRS S2 focuses on climate-related risks and opportunities and builds disclosures around governance, strategy, risk management, and metrics and targets.","climate risks,opportunities,governance,strategy,metrics,targets",10,"medium"),
+("IFRS 1","first-time adoption","Explain the general principle an entity applies in its opening IFRS statement of financial position on first-time adoption, and name two optional exemptions it may use.","On transition, an entity applies IFRS Accounting Standards retrospectively as if it had always applied them, recognising all assets and liabilities required by IFRS and derecognising items not permitted, with the net adjustment taken to opening retained earnings. IFRS 1 provides optional exemptions (for example for business combinations and cumulative translation differences) and mandatory exceptions to full retrospective application to keep transition practicable.","opening IFRS statement of financial position,retrospective application,optional exemption,mandatory exception,transition date",10,"medium"),
 ("IAS 20","government grants","Explain two acceptable presentation approaches for an asset-related government grant and the effect on future profit.","An asset-related grant may be presented as deferred income recognised systematically over the asset's useful life or deducted from the carrying amount of the asset, consistent with the standard.","asset-related grant,deferred income,carrying amount,systematic basis",10,"medium"),
 ("IAS 40","investment property","Distinguish investment property from owner-occupied property and explain the fair value model.","Investment property is property held to earn rentals or for capital appreciation. Under the fair value model, qualifying changes in fair value are recognised in profit or loss.","investment property,owner occupied,fair value model,profit or loss",10,"medium"),
 ("IFRS 5","held for sale","Explain the criteria for classification as held for sale and the subsequent measurement and presentation requirements.","The asset or disposal group must be available for immediate sale in its present condition and the sale must be highly probable. Once classified, measurement is at the lower of carrying amount and fair value less costs to sell and depreciation ceases.","held for sale,highly probable,fair value less costs to sell,depreciation",10,"medium"),
@@ -1348,9 +1162,17 @@ def seed_if_empty(db: Session) -> None:
     standard_map={}
     for item in STANDARD_CATALOG:
         obj=db.scalar(select(Standard).where(Standard.code==item['code']))
+        examinable = item.get('examinable', True)
+        description = item.get('note') or f"DipIFR coverage aligned to the current study guide: {item['title']}."
         if not obj:
-            obj=Standard(code=item['code'], title=item['title'], description=f"DipIFR coverage aligned to the current study guide: {item['title']}.")
+            obj=Standard(code=item['code'], title=item['title'], description=description, examinable=examinable)
             db.add(obj); db.flush()
+        else:
+            # Keep examinable/description in sync with the catalog on every
+            # restart, so a correction like "IFRS S1/S2 aren't examinable"
+            # takes effect for existing databases too, not just fresh ones.
+            obj.examinable = examinable
+            obj.description = description
         standard_map[item['code']]=obj
         for idx,title in enumerate(item['topics'],1):
             code=f"{item['code'].replace(' ','-').replace('/','-').lower()}-{idx}"
@@ -1462,18 +1284,21 @@ def seed_if_empty(db: Session) -> None:
                 db.add(QuestionCriterion(question_id=q.id,criterion=criterion,marks=marks,expected_points=expected))
     db.flush()
 
-    # Real ACCA past-exam questions on IAS 16/IAS 23 from the user's own
-    # compiled spreadsheet, extending the platform's genuine past-exam
-    # coverage to December 2020, December 2021, June 2022 and June 2023 —
-    # sessions not present in the original PDF-derived question bank.
-    for primary,extras,session,qnum,marks,prompt,answer,keywords,rubric_marks in REAL_SESSION_IAS16_23:
-        if not db.scalar(select(Question).where(Question.source=='past_exam', Question.prompt==prompt)):
+    # Real ACCA past-exam questions on IAS 16/IAS 23, extending genuine
+    # past-exam coverage to December 2020, December 2021, June 2022 and June
+    # 2023 — sessions not present in the original PDF-derived question bank.
+    # Prompt/answer text is generated fresh each run from the sanitised
+    # (non-copyrighted) helper functions above, not stored verbatim.
+    for primary, extras, session, qnum, marks, keywords, report_link in REAL_SESSION_IAS16_23:
+        prompt = _sanitised_past_exam_prompt(session, qnum, marks, keywords, report_link)
+        if not db.scalar(select(Question).where(Question.source=='past_exam', Question.source_round==session, Question.marks==marks, Question.topic_code==primary)):
             q=Question(
-                topic_code=primary, prompt=prompt, model_answer=answer, rubric_keywords=keywords, marks=marks,
+                topic_code=primary, prompt=prompt, model_answer=_sanitised_past_exam_answer(report_link),
+                rubric_keywords=keywords, marks=marks,
                 question_type='past_exam', difficulty='exam', source='past_exam',
-                learning_objective=f'Real ACCA DipIFR {session} exam question on {primary}.',
+                learning_objective=f'ACCA DipIFR {session} exam question on {primary}.',
                 source_round=session, question_number=qnum,
-                source_reference='User-provided study spreadsheet compiling real ACCA DipIFR past exam questions.',
+                source_reference=_PAST_PAPERS_PAGE,
                 review_status='approved',
             )
             db.add(q); db.flush()
@@ -1516,11 +1341,40 @@ def seed_if_empty(db: Session) -> None:
             'source is available; use this item for exam simulation and analysis.'
         )
         rubric_keywords = ','.join(real_keywords)
-        # Conservative standard tagging based on the actual question text. Q1 is consolidation-heavy; other questions use keyword matching.
+        # Standard tagging based on our own topic keywords (not the copyrighted question
+        # text, which is no longer stored — see the sanitisation note on PAST_QUESTIONS).
         candidates=[]
-        upper=text.upper()
+        upper=' '.join(real_keywords).upper()
         keyword_map=[
-            ('IFRS 15',['IFRS 15','REVENUE FROM CONTRACTS']),('IFRS 16',['IFRS 16','LEASE']),('IFRS 9',['IFRS 9','FINANCIAL INSTRUMENT']),('IFRS 2',['IFRS 2','SHARE-BASED']),('IAS 12',['IAS 12','DEFERRED TAX']),('IAS 19',['IAS 19','EMPLOYEE BENEFIT']),('IAS 33',['IAS 33','EARNINGS PER SHARE']),('IAS 37',['IAS 37','PROVISION']),('IAS 36',['IAS 36','IMPAIRMENT']),('IAS 16',['IAS 16','PROPERTY, PLANT']),('IAS 38',['IAS 38','INTANGIBLE']),('IAS 21',['IAS 21','FOREIGN CURRENCY']),('IAS 41',['IAS 41','AGRICULTURE']),('IFRS 5',['IFRS 5','HELD FOR SALE']),('IFRS 3',['IFRS 3','BUSINESS COMBINATION']),('IFRS 10',['IFRS 10','CONSOLIDATED']),('IAS 28',['IAS 28','ASSOCIATE']),('IFRS 11',['IFRS 11','JOINT ARRANGEMENT']),('IFRS 13',['IFRS 13','FAIR VALUE']),('IAS 40',['IAS 40','INVESTMENT PROPERTY']),('IAS 20',['IAS 20','GOVERNMENT GRANT']),('IFRS 6',['IFRS 6','EXPLORATION']),('IAS 24',['IAS 24','RELATED PARTY']),('IFRS 8',['IFRS 8','OPERATING SEGMENT']),('IAS 10',['IAS 10','EVENTS AFTER']),('IAS 8',['IAS 8','ACCOUNTING POLICY']),('IFRS 18',['IFRS 18','OPERATING CATEGORY']),('IFRS 19',['IFRS 19','REDUCED DISCLOSURES'])]
+            ('IFRS 15',['PERFORMANCE OBLIGATION','TRANSACTION PRICE','VARIABLE CONSIDERATION','REVENUE FROM CONTRACT']),
+            ('IFRS 16',['LESSOR','LESSEE','RIGHT-OF-USE','LEASE LIABILIT']),
+            ('IFRS 9',['FINANCIAL INSTRUMENT','AMORTISED COST','FAIR VALUE THROUGH','FINANCIAL ASSET','FINANCIAL LIABILIT','EXPECTED CREDIT LOSS']),
+            ('IFRS 2',['SHARE OPTION','SHARE-BASED','SHARE BASED']),
+            ('IAS 12',['DEFERRED TAX']),
+            ('IAS 19',['EMPLOYEE BENEFIT','DEFINED BENEFIT','PENSION']),
+            ('IAS 33',['EARNINGS PER SHARE']),
+            ('IAS 37',['PROVISION','CONTINGENT LIABILIT','CONTINGENT ASSET']),
+            ('IAS 36',['IMPAIRMENT','RECOVERABLE AMOUNT','CASH-GENERATING','CASH GENERATING']),
+            ('IAS 16',['PROPERTY, PLANT','DEPRECIATION']),
+            ('IAS 38',['INTANGIBLE ASSET']),
+            ('IAS 21',['EXCHANGE RATE','TRANSLAT','FUNCTIONAL CURRENCY','FOREIGN OPERATION']),
+            ('IAS 41',['AGRICULTUR','BIOLOGICAL ASSET']),
+            ('IFRS 5',['HELD FOR SALE','DISCONTINUED OPERATION']),
+            ('IFRS 3',['BUSINESS COMBINATION','GOODWILL','BARGAIN PURCHASE']),
+            ('IFRS 10',['CONSOLIDAT','NON-CONTROLLING INTEREST','SUBSIDIAR']),
+            ('IAS 28',['ASSOCIATE','SIGNIFICANT INFLUENCE','EQUITY METHOD']),
+            ('IFRS 11',['JOINT ARRANGEMENT','JOINT VENTURE','JOINT OPERATION']),
+            ('IFRS 13',['FAIR VALUE MEASUREMENT','LEVEL 1','LEVEL 2','LEVEL 3']),
+            ('IAS 40',['INVESTMENT PROPERTY']),
+            ('IAS 20',['GOVERNMENT GRANT']),
+            ('IFRS 6',['EXPLORATION FOR','EVALUATION OF MINERAL']),
+            ('IAS 24',['RELATED PART','KEY MANAGEMENT PERSONNEL']),
+            ('IFRS 8',['OPERATING SEGMENT']),
+            ('IAS 10',['ADJUSTING EVENT','EVENTS AFTER']),
+            ('IAS 8',['ACCOUNTING POLIC','ACCOUNTING ESTIMATE','PRIOR PERIOD ERROR']),
+            ('IAS 2',['INVENTOR','NET REALISABLE VALUE']),
+            ('IAS 1',['OTHER COMPREHENSIVE INCOME']),
+        ]
         for code,keys in keyword_map:
             if any(k in upper for k in keys): candidates.append(code)
         if row['question_number']==1 and not candidates: candidates=['IFRS 10']

@@ -284,7 +284,9 @@
       "objectives",
       "core content",
       "material information"
-    ]
+    ],
+    "examinable": false,
+    "note": "Not part of the examinable ACCA DipIFR syllabus. Included here for general awareness only — do not prioritise this for exam prep."
   },
   {
     "code": "IFRS S2",
@@ -295,7 +297,9 @@
       "governance",
       "strategy",
       "metrics and targets"
-    ]
+    ],
+    "examinable": false,
+    "note": "Not part of the examinable ACCA DipIFR syllabus. Included here for general awareness only — do not prioritise this for exam prep."
   },
   {
     "code": "IAS 20",
@@ -381,6 +385,27 @@
       "fundamental ethical principles",
       "professional judgement in applying IFRS",
       "management bias and ethical conflicts"
+    ]
+  },
+  {
+    "code": "IAS 7",
+    "title": "Statement of Cash Flows",
+    "topics": [
+      "indirect method",
+      "operating, investing and financing activities",
+      "cash and cash equivalents",
+      "consolidated cash flow adjustments",
+      "non-cash transactions"
+    ]
+  },
+  {
+    "code": "IFRS 1",
+    "title": "First-time Adoption of International Financial Reporting Standards",
+    "topics": [
+      "opening IFRS statement of financial position",
+      "mandatory and optional exemptions",
+      "reconciliations to previous GAAP",
+      "transition date"
     ]
   }
 ]

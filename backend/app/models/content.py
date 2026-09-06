@@ -11,6 +11,11 @@ class Standard(Base):
     title: Mapped[str] = mapped_column(String(200))
     description: Mapped[str] = mapped_column(Text, default='')
     active: Mapped[bool] = mapped_column(Boolean, default=True)
+    # False for standards that appear here for general awareness but are not
+    # part of the examinable ACCA DipIFR syllabus (e.g. the ISSB sustainability
+    # standards), so the frontend can flag them clearly instead of implying
+    # every listed standard is exam-relevant.
+    examinable: Mapped[bool] = mapped_column(Boolean, default=True)
 
 
 class Topic(Base):
