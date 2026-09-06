@@ -7,6 +7,7 @@ from slowapi.errors import RateLimitExceeded
 from .core.config import settings
 from .core.limiter import limiter
 from .db import Base, engine, SessionLocal
+from sqlalchemy import inspect, text
 from .api.auth import router as auth_router
 from .api.learning import router as learning_router
 from .api.exams import router as exams_router
@@ -16,10 +17,31 @@ from .api.admin import router as admin_router
 from .models import User, TopicProgress, PracticeAttempt, RefreshToken, Question, MockExam, MockExamQuestion, ExamAttempt, ExamAnswer, Standard, Topic, LearningResource, PastExamSession, QuestionStandardLink, QuestionCriterion
 from .seed_data import seed_if_empty
 logging.basicConfig(level=logging.INFO, format="%(levelname)s:%(name)s: %(message)s")
+def _apply_lightweight_column_migrations(engine) -> None:
+    """`Base.metadata.create_all` only creates tables that don't exist yet —
+    it never alters an existing table, so adding a new column to a model
+    (like `Standard.examinable`) does nothing on a database that already has
+    that table. Without a real migration tool (Alembic) in this project,
+    this checks for a small, known list of columns added after the initial
+    schema and adds any that are missing, so existing production databases
+    don't crash on startup after a model change. New tables are still
+    handled fine by create_all above; this only covers ALTER TABLE ADD COLUMN
+    on tables that may already exist."""
+    inspector = inspect(engine)
+    if not inspector.has_table("standards"):
+        return  # fresh database — create_all above already added the column
+    existing_columns = {col["name"] for col in inspector.get_columns("standards")}
+    if "examinable" not in existing_columns:
+        with engine.begin() as conn:
+            conn.execute(text("ALTER TABLE standards ADD COLUMN examinable BOOLEAN DEFAULT TRUE NOT NULL"))
+        logging.getLogger(__name__).info("Migrated: added standards.examinable column")
+
+
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     settings.validate_runtime()
     Base.metadata.create_all(bind=engine)
+    _apply_lightweight_column_migrations(engine)
     db = SessionLocal()
     try:
         seed_if_empty(db)
