@@ -14,14 +14,20 @@ def test_question_bank_source_filter_returns_past_exam_questions(client):
     res = client.get("/content/questions?source=past_exam&limit=100", headers=headers)
     assert res.status_code == 200
     items = res.json()
-    # 44 from the original PDF-derived compilation (Dec 2015 - June 2020)
-    # + 7 real IAS 16/IAS 23 questions extending coverage to (Dec 2017, June
-    # 2018, Sep 2020, Dec 2020, Dec 2021, June 2022, June 2023)
-    # + 16 more (4 questions x 4 sittings) extending coverage to June 2023,
-    # December 2023, June 2024 and December 2024. All 67 are reference-only:
-    # ACCA's copyrighted question/answer text was replaced with a link to the
-    # official past paper plus our own topic keywords — see seed_data.py.
-    assert len(items) == 67
+    # From backend/app/data/past_exam_questions.json:
+    #   44 from the original PDF-derived compilation (Dec 2015 - June 2020)
+    # + 16 (4 questions x 4 sittings) extending coverage to June 2023,
+    #   December 2023, June 2024 and December 2024
+    # + 16 (4 questions x 4 sittings) filling the December 2020 - June 2022
+    #   gap
+    # + 8 (4 questions x 2 sittings) for June 2025 and December 2025
+    # = 84 from the JSON file, plus 7 more real IAS 16/IAS 23 questions
+    #   (REAL_SESSION_IAS16_23 in seed_data.py, covering Dec 2017, June 2018,
+    #   Sep 2020, Dec 2020, Dec 2021, June 2022, June 2023) seeded separately
+    #   in Python = 91 total. All are reference-only: ACCA's copyrighted
+    # question/answer text was replaced with a link to the official past
+    # paper plus our own topic keywords — see seed_data.py.
+    assert len(items) == 91
     assert all(item["source"] == "past_exam" for item in items)
 
 

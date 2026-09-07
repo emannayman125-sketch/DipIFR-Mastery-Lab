@@ -17,25 +17,27 @@ def test_seven_original_mock_exams_all_100_marks(client):
 
 
 def test_all_36_standards_have_flagship_exam_quality_questions(client):
-    """The syllabus has 38 standard areas (36 examinable ACCA DipIFR areas
-    plus IFRS S1/S2, included for general awareness only and explicitly
-    flagged as not examinable). Every examinable standard must be covered by
-    at least one 25-mark, marking-point-backed flagship question via the
-    seven mock exams combined, with one deliberate exception: IFRS 1 is
-    examinable but — per ACCA's own past papers and examiner commentary —
-    only ever appears as a short discussion component within another
-    question, never as a full standalone 25-mark question, so requiring a
-    flagship-level question for it would misrepresent the real exam. It is
-    instead checked separately for adequate scenario-level coverage."""
+    """The syllabus has 38 examinable standard areas (all confirmed on ACCA's
+    official DipIFR examinable-documents list — IFRS S1/S2 sustainability
+    disclosures were added from the December 2024/June 2025 sitting onwards
+    and were genuinely tested in the June 2025 exam's question 4). Every
+    standard must be covered by at least one 25-mark, marking-point-backed
+    flagship question via the seven mock exams combined, with one documented
+    category of exception: standards that real past exams show only ever
+    appear as one discussion component within a mixed-topic question 4
+    (alongside one or two unrelated issues), never as a full standalone
+    25-mark question on their own — IFRS 1 (seen this way in Dec 2020 and
+    June 2022), and IFRS S1/S2 (seen this way in June 2025, mixed with
+    operating segments and prior period errors in the same question).
+    Building a dedicated 25-mark flagship around any of these would
+    misrepresent how the real exam actually uses them, so they're instead
+    checked separately for adequate scenario-level coverage."""
     headers = _auth_headers(client)
     standards = client.get("/content/standards", headers=headers).json()
     all_standards = {s["code"] for s in standards}
     assert len(all_standards) == 38
 
-    non_examinable = {s["code"] for s in standards if s["examinable"] is False}
-    assert non_examinable == {"IFRS S1", "IFRS S2"}
-
-    no_flagship_expected = non_examinable | {"IFRS 1"}
+    no_flagship_expected = {"IFRS 1", "IFRS S1", "IFRS S2"}
 
     exams = client.get("/exams").json()
     mocks = [e for e in exams if e["title"].startswith("Mastery Mock")]
@@ -46,12 +48,13 @@ def test_all_36_standards_have_flagship_exam_quality_questions(client):
             covered.update(q["related_standards"])
 
     missing = (all_standards - no_flagship_expected) - covered
-    assert not missing, f"Examinable standards still without a flagship question: {sorted(missing)}"
+    assert not missing, f"Standards still without a flagship question: {sorted(missing)}"
 
-    # IFRS 1 still needs a real, adequately-marked original question even
-    # though it doesn't get a full flagship.
-    bank = client.get("/content/questions?standard=IFRS 1&limit=20", headers=headers).json()
-    assert any(q["marks"] >= 10 for q in bank), "IFRS 1 has no scenario-level question"
+    # The Q4-only standards still each need a real, adequately-marked
+    # original question even though none of them gets a full flagship.
+    for code in no_flagship_expected:
+        bank = client.get(f"/content/questions?standard={code}&limit=20", headers=headers).json()
+        assert any(q["marks"] >= 10 for q in bank), f"{code} has no scenario-level question"
 
 
 def test_ifrs18_ifrs19_smes_now_have_marking_points(client):
