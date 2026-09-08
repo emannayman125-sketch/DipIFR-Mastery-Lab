@@ -7,6 +7,31 @@ class ProgressResponse(BaseModel):
     topics: dict[str, int]
 
 
+class WeakStandard(BaseModel):
+    code: str
+    title: str
+    mastery: int
+
+
+class MockScoreHistoryPoint(BaseModel):
+    exam_id: int
+    title: str
+    score_percent: int
+    submitted_at: str
+
+
+class MyLevelResponse(BaseModel):
+    overall_mastery: int
+    exam_readiness_percent: int  # overall_mastery expressed against the 50% real-exam pass mark
+    is_exam_ready: bool
+    weakest_standards: list[WeakStandard]
+    strongest_standards: list[WeakStandard]
+    mock_score_history: list[MockScoreHistoryPoint]
+    mock_average_percent: int | None
+    standards_practiced: int
+    standards_total: int
+
+
 class NextQuestionResponse(BaseModel):
     question_id: int
     topic_code: str

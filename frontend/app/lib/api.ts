@@ -100,6 +100,14 @@ export async function restoreSession(): Promise<boolean> {
 
 export type AuthResponse = { access_token: string; token_type: string };
 export type ProgressResponse = { user_id: number; overall: number; topics: Record<string, number> };
+export type WeakStandard = { code: string; title: string; mastery: number };
+export type MockScoreHistoryPoint = { exam_id: number; title: string; score_percent: number; submitted_at: string };
+export type MyLevelResponse = {
+  overall_mastery: number; exam_readiness_percent: number; is_exam_ready: boolean;
+  weakest_standards: WeakStandard[]; strongest_standards: WeakStandard[];
+  mock_score_history: MockScoreHistoryPoint[]; mock_average_percent: number | null;
+  standards_practiced: number; standards_total: number;
+};
 export type NextQuestionResponse = {
   question_id: number; topic_code: string; related_standards: string[]; prompt: string; marks: number;
   source: string; source_round: string; source_reference: string; question_number: number | null;
@@ -179,6 +187,7 @@ export const api = {
     rawRequest<{ detail: string }>("/auth/resend-verification", { method: "POST", body: JSON.stringify({ email }) }),
 
   getProgress: () => request<ProgressResponse>("/learning/progress", { method: "GET" }, true),
+  getMyLevel: () => request<MyLevelResponse>("/learning/my-level", { method: "GET" }, true),
 
   getNextQuestion: () => request<NextQuestionResponse>("/learning/practice/next", { method: "GET" }, true),
 

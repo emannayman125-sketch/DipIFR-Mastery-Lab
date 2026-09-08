@@ -6,12 +6,15 @@ from sqlalchemy.orm import Session
 
 from ..db import get_db
 from ..dependencies import current_user
-from ..models import User, TopicProgress, PracticeAttempt, Question, Standard, QuestionStandardLink
+from ..models import User, TopicProgress, PracticeAttempt, Question, Standard, QuestionStandardLink, MockExam, ExamAttempt
 from ..schemas.learning import (
     ProgressResponse,
     NextQuestionResponse,
     PracticeSubmitRequest,
     PracticeSubmitResponse,
+    MyLevelResponse,
+    WeakStandard,
+    MockScoreHistoryPoint,
 )
 from ..core.grading import keyword_grade
 from ..core.ai_client import grade_answer_with_ai
@@ -59,6 +62,56 @@ def _linked_standard_codes(db: Session, question: Question) -> list[str]:
 def progress(user: User = Depends(current_user), db: Session = Depends(get_db)):
     topics = _topics_for(db, user.id)
     return ProgressResponse(user_id=user.id, overall=_overall(topics), topics=topics)
+
+
+# The real ACCA DipIFR exam pass mark is 50%. "Exam readiness" is expressed
+# as a percentage of that bar, not of the full 0-100 mastery scale, so 100%
+# readiness means "at the pass mark", not "perfect on every standard" —
+# reaching 50% mastery genuinely is the realistic target, not 100%.
+REAL_EXAM_PASS_MARK = 50
+
+
+@router.get("/my-level", response_model=MyLevelResponse)
+def my_level(user: User = Depends(current_user), db: Session = Depends(get_db)):
+    topics = _topics_for(db, user.id)
+    overall = _overall(topics)
+
+    all_standards = {s.code: s.title for s in db.scalars(select(Standard)).all()}
+    ranked = sorted(
+        ({"code": code, "title": all_standards.get(code, code), "mastery": mastery} for code, mastery in topics.items()),
+        key=lambda row: row["mastery"],
+    )
+    weakest = [WeakStandard(**row) for row in ranked[:5]]
+    strongest = [WeakStandard(**row) for row in ranked[-3:][::-1]] if ranked else []
+
+    attempts = db.scalars(
+        select(ExamAttempt)
+        .where(ExamAttempt.user_id == user.id, ExamAttempt.submitted_at.isnot(None))
+        .order_by(ExamAttempt.submitted_at)
+    ).all()
+    exam_titles = {e.id: e.title for e in db.scalars(select(MockExam)).all()}
+    history = [
+        MockScoreHistoryPoint(
+            exam_id=a.exam_id,
+            title=exam_titles.get(a.exam_id, "Mock exam"),
+            score_percent=a.score_percent or 0,
+            submitted_at=a.submitted_at.isoformat(),
+        )
+        for a in attempts
+    ]
+    mock_average = round(sum(h.score_percent for h in history) / len(history)) if history else None
+
+    return MyLevelResponse(
+        overall_mastery=overall,
+        exam_readiness_percent=min(100, round(overall / REAL_EXAM_PASS_MARK * 100)) if overall else 0,
+        is_exam_ready=overall >= REAL_EXAM_PASS_MARK,
+        weakest_standards=weakest,
+        strongest_standards=strongest,
+        mock_score_history=history,
+        mock_average_percent=mock_average,
+        standards_practiced=len(topics),
+        standards_total=len(all_standards),
+    )
 
 
 @router.get("/practice/next", response_model=NextQuestionResponse)

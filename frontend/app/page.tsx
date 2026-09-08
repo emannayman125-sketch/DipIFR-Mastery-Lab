@@ -107,7 +107,7 @@ export default function Home() {
   return (
     <main className="shell">
       <aside className="sidebar">
-        <div className="brand"><div className="brandMark">D</div><div><strong>DipIFR</strong><span>Mastery Lab</span></div></div>
+        <div className="brand"><div className="brandMark">D<i /></div><div><strong>Dip<span style={{color:"#d8b36a"}}>IFR</span></strong><span>Mastery Lab</span></div></div>
         <div className="profile"><div className="avatar">{user[0]?.toUpperCase()}</div><div><b>{user}</b><small>Student account</small></div></div>
         <nav>{nav.map(([id,icon,label]) => <button key={id} className={view===id?"navItem active":"navItem"} onClick={()=>setView(id)}><span>{icon}</span>{label}</button>)}</nav>
         <div className="quote"><p>﴿وَقُلْ رَبِّ زِدْنِي عِلْمًا﴾</p><small>سورة طه · 114</small></div>
@@ -125,7 +125,7 @@ export default function Home() {
         {view==="questions" && <QuestionBank onSubmitted={loadProgress} onAskTutor={(ctx)=>{setTutorContext(ctx); setView("tutor");}}/>}
         {view==="exams" && <MockExams onFinished={loadProgress}/>}
         {view==="practice" && <Practice onSubmitted={loadProgress} onAskTutor={(ctx)=>{setTutorContext(ctx); setView("tutor");}}/>}
-        {view==="learning" && <Learning progress={progress} overall={overall} standards={standardsData}/>}
+        {view==="learning" && <Learning progress={progress} overall={overall} standards={standardsData} onGoPractice={()=>setView("practice")}/>}
         {view==="knowledge" && <KnowledgeBase/>}
         {view==="tutor" && <Tutor initialQuestionContext={tutorContext}/>}
       </section>
@@ -680,8 +680,64 @@ function Practice({onSubmitted,onAskTutor}:{onSubmitted:()=>void;onAskTutor:(con
   </div></div>
 }
 
-function Learning({progress,overall,standards}:{progress:Record<string,number>;overall:number;standards:import("./lib/api").StandardOut[]}) {
+function Learning({progress,overall,standards,onGoPractice}:{progress:Record<string,number>;overall:number;standards:import("./lib/api").StandardOut[];onGoPractice:()=>void}) {
+  const [level, setLevel] = useState<import("./lib/api").MyLevelResponse | null>(null);
+  const [levelErr, setLevelErr] = useState<string | null>(null);
+  useEffect(() => {
+    api.getMyLevel().then(setLevel).catch(() => setLevelErr("Could not load your level right now."));
+  }, []);
+
   return <div className="stack"><section className="hero compact"><div><span className="pill">LEARNING ENGINE</span><h2>Track every standard, not just the weak ones.</h2><p>Mastery rises automatically each time you answer a question linked to a standard — from Practice, the Question Bank, or exams.</p></div><div className="scoreRing"><strong>{overall}%</strong><span>overall mastery</span></div></section>
+
+    {level && <section className="panel myLevel">
+      <SectionTitle title="My level" />
+      <div className="myLevelTop">
+        <div className="readinessRing" style={{background:`conic-gradient(#d8b36a ${level.exam_readiness_percent}%, #e9edf4 0)`}}>
+          <div className="readinessRingInner">
+            <strong>{level.exam_readiness_percent}%</strong>
+            <span>exam ready</span>
+          </div>
+        </div>
+        <div className="myLevelStats">
+          <p className="lead" style={{marginTop:0}}>
+            {level.is_exam_ready
+              ? "Your overall mastery is at or above the real DipIFR pass mark (50%). Keep practising to build a safety margin."
+              : `The real DipIFR exam pass mark is 50%. You're at ${level.overall_mastery}% overall mastery — readiness is shown against that 50% bar, not a full 100.`}
+          </p>
+          <div className="examMeta">
+            <span>{level.standards_practiced} of {level.standards_total} standards practised</span>
+            {level.mock_average_percent !== null && <span>{level.mock_average_percent}% average mock score</span>}
+          </div>
+        </div>
+      </div>
+
+      {level.weakest_standards.length > 0 && <div className="myLevelCol">
+        <h3>Focus here next</h3>
+        <div className="progressList">
+          {level.weakest_standards.map(s => (
+            <div className="progressRow" key={s.code}>
+              <div><b>{s.code}</b><small>{s.title} · {s.mastery}% mastery</small></div>
+              <div className="bar"><i style={{width:`${s.mastery}%`, background: s.mastery < 40 ? "#c2410c" : "#3d5f9c"}}/></div>
+            </div>
+          ))}
+        </div>
+        <button className="primary" style={{marginTop:14}} onClick={onGoPractice}>Practise a weak area →</button>
+      </div>}
+
+      {level.mock_score_history.length > 0 && <div className="myLevelCol">
+        <h3>Mock exam trend</h3>
+        <div className="progressList">
+          {level.mock_score_history.map((h,i) => (
+            <div className="progressRow" key={i}>
+              <div><b>{h.title}</b><small>{new Date(h.submitted_at).toLocaleDateString()}</small></div>
+              <div className="bar"><i style={{width:`${h.score_percent}%`, background: h.score_percent >= 50 ? "#2d6a46" : "#c2410c"}}/></div>
+            </div>
+          ))}
+        </div>
+      </div>}
+    </section>}
+    {levelErr && <p className="lead">{levelErr}</p>}
+
     {standards.length === 0
       ? <p className="lead">Standards are loading…</p>
       : <div className="panel">
