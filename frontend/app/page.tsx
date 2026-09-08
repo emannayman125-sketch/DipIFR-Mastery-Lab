@@ -139,10 +139,16 @@ function titleFor(view: View) {
 
 function Dashboard({overall,progress,setView}:{overall:number;progress:Record<string,number>;setView:(v:View)=>void}) {
   const entries = Object.entries(progress);
-  const weakest = entries.length ? entries.sort((a,b)=>a[1]-b[1])[0] : undefined;
+  const [level, setLevel] = useState<import("./lib/api").MyLevelResponse | null>(null);
+  useEffect(() => { api.getMyLevel().then(setLevel).catch(() => {}); }, [progress]);
+  const weakest = level?.weakest_standards?.[0];
   return <div className="stack">
     <section className="hero"><div><span className="pill">Structured · exam-focused · persistent</span><h2>Study with a plan, practise with purpose.</h2><p>Use fixed mock exams to benchmark yourself, then use adaptive practice and your learning path to work on genuine weak areas.</p><button className="primary" onClick={()=>setView("learning")}>Continue Learning →</button></div><div className="scoreRing"><strong>{overall}%</strong><span>overall mastery</span></div></section>
-    <div className="grid3"><Metric title="Overall mastery" value={`${overall}%`} note="Across tracked topics"/><Metric title="Weakest area" value={weakest?.[0] ?? "—"} note={weakest?`${weakest[1]}% mastery`:"Start a practice set"}/><Metric title="Mock exams" value="2" note="Fixed difficulty formats"/></div>
+    <div className="grid3">
+      <Metric title="Overall mastery" value={`${overall}%`} note="Across tracked topics"/>
+      <Metric title="Weakest area" value={weakest?.code ?? "—"} note={weakest?`${weakest.mastery}% mastery`:"Start a practice set"}/>
+      <Metric title="Mock exams" value={level ? `${level.mocks_completed}/${level.mocks_total}` : "—"} note="Completed of 7 fixed-format mocks"/>
+    </div>
     <section className="panel"><SectionTitle title="Standards at a glance" action="View library" onClick={()=>setView("standards")}/>
       {entries.length === 0
         ? <p className="lead">No practice attempts yet. Head to Practice to start building your progress.</p>

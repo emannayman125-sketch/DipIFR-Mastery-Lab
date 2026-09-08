@@ -30,6 +30,8 @@ class MyLevelResponse(BaseModel):
     mock_average_percent: int | None
     standards_practiced: int
     standards_total: int
+    mocks_completed: int
+    mocks_total: int
 
 
 class NextQuestionResponse(BaseModel):

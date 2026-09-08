@@ -107,6 +107,7 @@ export type MyLevelResponse = {
   weakest_standards: WeakStandard[]; strongest_standards: WeakStandard[];
   mock_score_history: MockScoreHistoryPoint[]; mock_average_percent: number | null;
   standards_practiced: number; standards_total: number;
+  mocks_completed: number; mocks_total: number;
 };
 export type NextQuestionResponse = {
   question_id: number; topic_code: string; related_standards: string[]; prompt: string; marks: number;
