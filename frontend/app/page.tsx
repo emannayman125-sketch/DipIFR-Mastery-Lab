@@ -147,7 +147,7 @@ function Dashboard({overall,progress,setView}:{overall:number;progress:Record<st
     <div className="grid3">
       <Metric title="Overall mastery" value={`${overall}%`} note="Across tracked topics"/>
       <Metric title="Weakest area" value={weakest?.code ?? "—"} note={weakest?`${weakest.mastery}% mastery`:"Start a practice set"}/>
-      <Metric title="Mock exams" value={level ? `${level.mocks_completed}/${level.mocks_total}` : "—"} note="Completed of 7 fixed-format mocks"/>
+      <Metric title="Mock exams" value={level ? `${level.mocks_completed}/${level.mocks_total}` : "—"} note="Completed of 7 Mastery Mocks + 21 real past sittings"/>
     </div>
     <section className="panel"><SectionTitle title="Standards at a glance" action="View library" onClick={()=>setView("standards")}/>
       {entries.length === 0

@@ -79,7 +79,7 @@ def test_my_level_empty_for_new_user(client):
     assert body["standards_practiced"] == 0
     assert body["standards_total"] >= 36
     assert body["mocks_completed"] == 0
-    assert body["mocks_total"] == 7
+    assert body["mocks_total"] == 28  # 7 Mastery Mocks + 21 real past-exam sitting mocks
 
 
 def test_my_level_reflects_practice_and_ranks_weakest_first(client):
@@ -124,4 +124,4 @@ def test_my_level_includes_finished_mock_exam_score(client):
     assert body["mock_score_history"][0]["exam_id"] == mock["id"]
     assert body["mock_average_percent"] == body["mock_score_history"][0]["score_percent"]
     assert body["mocks_completed"] == 1
-    assert body["mocks_total"] == 7
+    assert body["mocks_total"] == 28  # 7 Mastery Mocks + 21 real past-exam sitting mocks

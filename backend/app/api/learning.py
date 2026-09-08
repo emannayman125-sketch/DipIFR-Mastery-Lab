@@ -100,10 +100,18 @@ def my_level(user: User = Depends(current_user), db: Session = Depends(get_db)):
         for a in attempts
     ]
     mock_average = round(sum(h.score_percent for h in history) / len(history)) if history else None
-    total_mocks = db.scalar(select(func.count()).select_from(MockExam).where(MockExam.title.like("Mastery Mock%"))) or 0
-    # Count distinct exams the user has actually completed, not total attempts
-    # (a re-sat mock shouldn't inflate the "completed" count).
-    completed_mock_ids = {a.exam_id for a in attempts if exam_titles.get(a.exam_id, "").startswith("Mastery Mock")}
+    # "Mock exams" here counts BOTH the 7 original AI-graded "Mastery Mock"
+    # exams AND the 21 real ACCA "Past Round — {sitting}" exams (reference
+    # question text with keyword grading — see PRODUCTION_CHECKLIST.md for
+    # why their text isn't reproduced in full). Counting only one type would
+    # understate how much real, attemptable exam content is actually here.
+    total_mocks = db.scalar(select(func.count()).select_from(MockExam).where(
+        or_(MockExam.title.like("Mastery Mock%"), MockExam.title.like("Past Round%"))
+    )) or 0
+    completed_mock_ids = {
+        a.exam_id for a in attempts
+        if exam_titles.get(a.exam_id, "").startswith(("Mastery Mock", "Past Round"))
+    }
 
     return MyLevelResponse(
         overall_mastery=overall,
