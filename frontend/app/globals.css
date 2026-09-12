@@ -55,3 +55,10 @@ table.sheet td input:focus{background:#eef2fb}
 details{margin-top:8px;font-size:13px;color:#4b5875}
 details summary{cursor:pointer;font-weight:700;color:#20375f}
 details ul{margin:8px 0 0;padding-left:18px;line-height:1.7}
+.secondary{border:1px solid #dce2eb;border-radius:12px;background:#fff;color:#2f3b52;padding:10px 16px;font-weight:700}
+.modalBackdrop{position:fixed;inset:0;background:rgba(13,23,48,.55);display:flex;align-items:center;justify-content:center;padding:24px;z-index:1000}
+.modalCard{max-width:760px;width:100%;max-height:88vh;overflow-y:auto}
+.modalHeader{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+.modalClose{border:0;background:#f1f4f8;color:#4a5670;width:32px;height:32px;border-radius:10px;font-size:15px;flex-shrink:0}
+.modalNav{display:flex;justify-content:space-between;align-items:center;margin-top:24px;padding-top:18px;border-top:1px solid #e9edf4}
+@media(max-width:600px){.modalBackdrop{padding:0}.modalCard{max-height:100vh;height:100%;border-radius:0}}

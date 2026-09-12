@@ -852,29 +852,56 @@ const standardDetails: Record<string, {summary:string; rules:string[]; exam:stri
 
 function KnowledgeBase() {
   const [q,setQ]=useState("");
-  const [selected,setSelected]=useState("IAS 16");
+  const [selected,setSelected]=useState<string|null>(null);
   const results=standards.filter(s=>`${s.code} ${s.title} ${s.topics.join(" ")}`.toLowerCase().includes(q.toLowerCase()));
-  const detail=standardDetails[selected];
-  const selectedStandard=standards.find(s=>s.code===selected);
+  const detail=selected?standardDetails[selected]:undefined;
+  const selectedStandard=selected?standards.find(s=>s.code===selected):undefined;
+  const selectedIndex=selected?results.findIndex(s=>s.code===selected):-1;
+
+  useEffect(()=>{
+    if(!selected) return;
+    const onKey=(e:KeyboardEvent)=>{ if(e.key==="Escape") setSelected(null); };
+    window.addEventListener("keydown",onKey);
+    document.body.style.overflow="hidden";
+    return ()=>{ window.removeEventListener("keydown",onKey); document.body.style.overflow=""; };
+  },[selected]);
+
+  const step=(dir:1|-1)=>{
+    if(selectedIndex<0||results.length===0) return;
+    const next=(selectedIndex+dir+results.length)%results.length;
+    setSelected(results[next].code);
+  };
+
   return <div className="stack">
     <div className="panel"><span className="pill">REFERENCE LIBRARY</span><h2>Understand the rule. Then apply it.</h2><p className="lead">Concise exam-focused notes, common traps and worked scenarios. Always verify final technical conclusions against the current official IFRS/IAS literature.</p><input className="search" value={q} onChange={e=>setQ(e.target.value)} placeholder="Search IAS 16, impairment, grants..." /></div>
-    <div className="cardGrid">{results.map(s=><article className={selected===s.code?"card selectedCard":"card"} key={s.code} onClick={()=>setSelected(s.code)}><div className="cardTop"><span className="code">{s.code}</span><span className="mini">{s.topics.length} core topics</span></div><h3>{s.title}</h3><p>{s.topics.join(" · ")}</p><button className="link" onClick={()=>setSelected(s.code)}>Open standard →</button></article>)}</div>
-    <section className="panel standardDetail">
-      <div className="cardTop"><span className="code">{selected}</span><span className="pill">EXAM FOCUS</span></div>
-      <h2>{selectedStandard?.title}</h2>
-      {detail ? (
-        <>
-          <p className="lead">{detail.summary}</p>
-          <div className="detailGrid">
-            <div><h3>Key rules</h3><ul>{detail.rules.map(x=><li key={x}>{x}</li>)}</ul></div>
-            <div><h3>What to practise</h3><ul>{detail.exam.map(x=><li key={x}>{x}</li>)}</ul></div>
-          </div>
-          <div className="exampleBox"><b>Exam scenario</b><p>{detail.example}</p></div>
-        </>
-      ) : (
-        <p className="lead">Detailed exam-focus notes for {selected} are coming soon. Core topics for now: {selectedStandard?.topics.join(" · ")}.</p>
-      )}
-    </section>
+    <div className="cardGrid">{results.map(s=><article className="card" key={s.code} onClick={()=>setSelected(s.code)}><div className="cardTop"><span className="code">{s.code}</span><span className="mini">{s.topics.length} core topics</span></div><h3>{s.title}</h3><p>{s.topics.join(" · ")}</p><button className="link" onClick={()=>setSelected(s.code)}>Open standard →</button></article>)}</div>
+
+    {selected && <div className="modalBackdrop" onClick={()=>setSelected(null)}>
+      <section className="panel standardDetail modalCard" onClick={e=>e.stopPropagation()}>
+        <div className="modalHeader">
+          <div className="cardTop"><span className="code">{selected}</span><span className="pill">EXAM FOCUS</span></div>
+          <button className="modalClose" onClick={()=>setSelected(null)} aria-label="Close">✕</button>
+        </div>
+        <h2>{selectedStandard?.title}</h2>
+        {detail ? (
+          <>
+            <p className="lead">{detail.summary}</p>
+            <div className="detailGrid">
+              <div><h3>Key rules</h3><ul>{detail.rules.map(x=><li key={x}>{x}</li>)}</ul></div>
+              <div><h3>What to practise</h3><ul>{detail.exam.map(x=><li key={x}>{x}</li>)}</ul></div>
+            </div>
+            <div className="exampleBox"><b>Exam scenario</b><p>{detail.example}</p></div>
+          </>
+        ) : (
+          <p className="lead">Detailed exam-focus notes for {selected} are coming soon. Core topics for now: {selectedStandard?.topics.join(" · ")}.</p>
+        )}
+        <div className="modalNav">
+          <button className="secondary" onClick={()=>step(-1)}>← Previous</button>
+          <span className="mini">{selectedIndex+1} of {results.length}</span>
+          <button className="secondary" onClick={()=>step(1)}>Next →</button>
+        </div>
+      </section>
+    </div>}
   </div>
 }
 
