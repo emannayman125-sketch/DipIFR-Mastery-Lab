@@ -22,8 +22,8 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
               marginTop: "32px"
             }}
           >
-            <p style={{ margin: 0, fontStyle: "italic" }}>
-              وَقُل رَّبِّ زِدْنِي عِلْمًا
+            <p style={{ margin: 0, fontStyle: "italic" }} dir="rtl" lang="ar">
+              ﴿وَقُل رَّبِّ زِدْنِي عِلْمًا﴾
             </p>
             <p style={{ margin: "6px 0 0" }}>
               DipIFR Mastery Lab &middot; Created by Eman Ayman Elbaghdady

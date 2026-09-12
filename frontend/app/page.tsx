@@ -109,7 +109,7 @@ export default function Home() {
         <div className="brand"><div className="brandMark">D<i /></div><div><strong>Dip<span style={{color:"#d8b36a"}}>IFR</span></strong><span>Mastery Lab</span></div></div>
         <div className="profile"><div className="avatar">{user[0]?.toUpperCase()}</div><div><b>{user}</b><small>Student account</small></div></div>
         <nav>{nav.map(([id,icon,label]) => <button key={id} className={view===id?"navItem active":"navItem"} onClick={()=>setView(id)}><span>{icon}</span>{label}</button>)}</nav>
-        <div className="quote"><p>﴿وَقُلْ رَبِّ زِدْنِي عِلْمًا﴾</p><small>سورة طه · 114</small></div>
+        <div className="quote" dir="rtl" lang="ar"><p>﴿وَقُلْ رَبِّ زِدْنِي عِلْمًا﴾</p><small>سورة طه · 114</small></div>
         <div className="founder">Founder<br/><b>Eman Ayman Elboghdady</b></div>
       </aside>
 
