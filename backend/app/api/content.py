@@ -29,7 +29,8 @@ def standards(user: User = Depends(current_user), db: Session = Depends(get_db))
     for s in rows:
         count = db.scalar(select(func.count(QuestionStandardLink.question_id)).where(QuestionStandardLink.standard_id == s.id)) or 0
         p = db.scalar(select(TopicProgress).where(TopicProgress.user_id == user.id, TopicProgress.topic_code == s.code))
-        result.append(StandardOut(id=s.id, code=s.code, title=s.title, description=s.description, question_count=count, mastery=p.mastery if p else 0, examinable=s.examinable))
+        topics = list(db.scalars(select(Topic.title).where(Topic.standard_id == s.id).order_by(Topic.code)))
+        result.append(StandardOut(id=s.id, code=s.code, title=s.title, description=s.description, question_count=count, mastery=p.mastery if p else 0, examinable=s.examinable, topics=topics))
     return result
 
 @router.get('/questions', response_model=list[QuestionBankItem])

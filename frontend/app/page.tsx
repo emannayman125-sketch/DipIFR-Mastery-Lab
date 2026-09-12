@@ -8,7 +8,6 @@ import {
 } from "./lib/api";
 
 type View = "dashboard" | "standards" | "questions" | "exams" | "practice" | "learning" | "knowledge" | "tutor";
-type Standard = { code: string; title: string; topics: string[] };
 
 
 
@@ -126,7 +125,7 @@ export default function Home() {
         {view==="exams" && <MockExams onFinished={loadProgress}/>}
         {view==="practice" && <Practice onSubmitted={loadProgress} onAskTutor={(ctx)=>{setTutorContext(ctx); setView("tutor");}}/>}
         {view==="learning" && <Learning progress={progress} overall={overall} standards={standardsData} onGoPractice={()=>setView("practice")}/>}
-        {view==="knowledge" && <KnowledgeBase/>}
+        {view==="knowledge" && <KnowledgeBase standards={standardsData}/>}
         {view==="tutor" && <Tutor initialQuestionContext={tutorContext}/>}
       </section>
     </main>
@@ -764,53 +763,6 @@ function Learning({progress,overall,standards,onGoPractice}:{progress:Record<str
   </div>
 }
 
-// Curated set of standards with full exam-focus deep-dives (rules, common
-// exam angles, a worked scenario). This is intentionally a smaller, hand
-// -written subset for the Knowledge Base's deep-dive view — separate from
-// the full ~32-standard list shown in the IFRS Library / Question Bank,
-// which comes live from the backend's Standard table instead.
-// Curated set of standards with full exam-focus deep-dives (rules, common
-// exam angles, a worked scenario) — now covering all 35 syllabus standards,
-// matching the live IFRS Library list, instead of a smaller 8-item subset.
-const standards: Standard[] = [
-  { code: "IFRS 15", title: "Revenue from Contracts with Customers", topics: ["five-step model", "performance obligations", "transaction price", "variable consideration", "principal vs agent"] },
-  { code: "IAS 16", title: "Property, Plant and Equipment", topics: ["initial cost", "subsequent expenditure", "revaluation", "component depreciation", "derecognition"] },
-  { code: "IAS 23", title: "Borrowing Costs", topics: ["qualifying assets", "commencement", "capitalisation rate", "suspension", "cessation"] },
-  { code: "IAS 36", title: "Impairment of Assets", topics: ["impairment indicators", "CGUs", "recoverable amount", "value in use", "reversals"] },
-  { code: "IFRS 16", title: "Leases", topics: ["right-of-use asset", "lease liability", "exemptions", "sale and leaseback", "lessor accounting"] },
-  { code: "IAS 38", title: "Intangible Assets", topics: ["recognition", "research", "development", "measurement", "useful life"] },
-  { code: "IFRS 3", title: "Business Combinations", topics: ["acquisition method", "consideration", "fair value", "goodwill", "bargain purchase"] },
-  { code: "IAS 2", title: "Inventories", topics: ["cost", "NRV", "write-down", "reversal", "cost formulas"] },
-  { code: "IFRS 9", title: "Financial Instruments", topics: ["classification", "SPPI", "business model", "ECL", "derecognition", "hedging"] },
-  { code: "IAS 32", title: "Financial Instruments: Presentation", topics: ["liability vs equity", "compound instruments", "offsetting"] },
-  { code: "IAS 37", title: "Provisions, Contingent Liabilities and Contingent Assets", topics: ["recognition", "measurement", "discounting", "contingencies", "restructuring"] },
-  { code: "IAS 19", title: "Employee Benefits", topics: ["short-term benefits", "defined contribution", "defined benefit", "termination benefits"] },
-  { code: "IAS 12", title: "Income Taxes", topics: ["current tax", "temporary differences", "deferred tax", "recognition", "measurement"] },
-  { code: "IAS 21", title: "The Effects of Changes in Foreign Exchange Rates", topics: ["functional currency", "monetary items", "closing rate", "translation", "exchange differences"] },
-  { code: "IAS 41", title: "Agriculture", topics: ["biological assets", "agricultural produce", "fair value", "government grants"] },
-  { code: "IFRS 2", title: "Share-based Payment", topics: ["equity settled", "cash settled", "fair value", "vesting conditions", "modification"] },
-  { code: "IFRS 6", title: "Exploration for and Evaluation of Mineral Resources", topics: ["scope", "initial measurement", "classification", "impairment"] },
-  { code: "IFRS 13", title: "Fair Value Measurement", topics: ["exit price", "principal market", "valuation techniques", "inputs", "fair value hierarchy"] },
-  { code: "IFRS 18", title: "Presentation and Disclosure in Financial Statements", topics: ["operating category", "investing category", "financing category", "subtotals", "aggregation and disaggregation"] },
-  { code: "IAS 33", title: "Earnings per Share", topics: ["basic EPS", "weighted average shares", "bonus issue", "rights issue", "diluted EPS"] },
-  { code: "IAS 10", title: "Events after the Reporting Period", topics: ["adjusting events", "non-adjusting events", "authorisation", "disclosure"] },
-  { code: "IAS 8", title: "Accounting Policies, Changes in Accounting Estimates and Errors", topics: ["accounting policies", "estimates", "prior period errors", "retrospective treatment", "going concern"] },
-  { code: "IAS 24", title: "Related Party Disclosures", topics: ["related party definition", "transactions", "key management", "disclosure"] },
-  { code: "IFRS 8", title: "Operating Segments", topics: ["operating segments", "CODM", "aggregation", "reportable segments", "thresholds"] },
-  { code: "IFRS for SMEs", title: "IFRS for SMEs Accounting Standard", topics: ["purpose", "differential reporting", "scope", "omitted topics"] },
-  { code: "IFRS 19", title: "Subsidiaries without Public Accountability", topics: ["eligibility", "reduced disclosures", "separate financial statements"] },
-  { code: "IFRS S1", title: "General Requirements for Disclosure of Sustainability-related Financial Information", topics: ["scope", "objectives", "core content", "material information"] },
-  { code: "IFRS S2", title: "Climate-related Disclosures", topics: ["climate risks", "climate opportunities", "governance", "strategy", "metrics and targets"] },
-  { code: "IAS 20", title: "Accounting for Government Grants and Disclosure of Government Assistance", topics: ["asset-related grants", "income-related grants", "deferred income", "presentation", "repayment"] },
-  { code: "IAS 40", title: "Investment Property", topics: ["definition", "fair value model", "cost model", "transfers", "disposals"] },
-  { code: "IFRS 5", title: "Non-current Assets Held for Sale and Discontinued Operations", topics: ["classification criteria", "measurement", "presentation", "disposal groups", "discontinued operations"] },
-  { code: "IFRS 10", title: "Consolidated Financial Statements", topics: ["control", "subsidiaries", "NCI", "consolidation", "uniform policies"] },
-  { code: "IAS 28", title: "Investments in Associates and Joint Ventures", topics: ["significant influence", "equity method", "impairment", "upstream/downstream transactions"] },
-  { code: "IFRS 11", title: "Joint Arrangements", topics: ["joint control", "joint operations", "joint ventures", "accounting treatment"] },
-  { code: "IAS 1", title: "Presentation of Financial Statements", topics: ["presentation", "materiality", "going concern", "comparatives", "fair presentation"] },
-  { code: "FRAMEWORK-ETHICS", title: "Conceptual Framework & Professional Ethics", topics: ["IASB conceptual framework", "elements of financial statements", "fundamental ethical principles", "professional judgement in applying IFRS", "management bias and ethical conflicts"] },
-];
-
 const standardDetails: Record<string, {summary:string; rules:string[]; exam:string[]; example:string}> = {
   "IAS 7": { summary:"IAS 7 requires an entity to present a statement of cash flows classifying cash flows into operating, investing and financing activities, so users can assess how the entity generates and uses cash.", rules:["Under the indirect method, start from profit before tax and add back non-cash items (e.g. depreciation) and non-operating items (e.g. profit on disposal).","Present the full proceeds or cost of an investing transaction (e.g. disposal of an asset) once, in investing activities — never split or duplicated into operating.","Dividends paid to a non-controlling interest are a separate financing outflow, distinct from dividends the parent pays its own shareholders.","Interest paid and received, and tax paid, are each disclosed separately, consistently classified period to period."], exam:["Indirect-method reconciliation from profit before tax","Adjusting for disposals, depreciation and finance costs","Classifying NCI dividends and financing items correctly","Consolidated cash flow adjustments (e.g. a mid-year subsidiary acquisition)"], example:"A group's profit before tax includes a profit on disposal of plant and a depreciation charge — both must be adjusted for when reconciling to cash generated from operations, with the actual disposal proceeds shown separately under investing activities." },
   "IFRS 1": { summary:"IFRS 1 sets out how an entity moves from its previous accounting framework (e.g. local GAAP) to full IFRS Accounting Standards for the first time, via an opening IFRS statement of financial position.", rules:["Apply IFRS Accounting Standards retrospectively as if they had always applied, as the general starting principle.","Recognise all assets and liabilities IFRS requires, and derecognise anything IFRS does not permit, with the net adjustment taken to opening retained earnings — not profit or loss.","Use the optional exemptions (e.g. for past business combinations or cumulative translation differences) where full retrospective restatement would be impracticable or excessively costly.","Apply the mandatory exceptions to retrospective application (e.g. for estimates and derecognition of financial instruments) exactly as IFRS 1 specifies — these are not optional."], exam:["General principle of the opening IFRS statement of financial position","Distinguishing optional exemptions from mandatory exceptions","Where the net transition adjustment is recognised (opening retained earnings)"], example:"A company adopting IFRS for the first time restates its opening statement of financial position as if IFRS had always been applied, using the business-combinations exemption to avoid restating a five-year-old acquisition from scratch." },
@@ -852,7 +804,7 @@ const standardDetails: Record<string, {summary:string; rules:string[]; exam:stri
   "FRAMEWORK-ETHICS": { summary:"The IASB's Conceptual Framework underpins the development of IFRS Accounting Standards and defines the elements of financial statements, supported by fundamental ethical principles that guide professional judgement.", rules:["The Conceptual Framework defines assets, liabilities, equity, income and expenses, and the qualitative characteristics of useful financial information (relevance and faithful representation, supported by comparability, verifiability, timeliness and understandability).","Preparers exercise professional judgement in applying IFRS, particularly where a standard does not specifically address a transaction.","Fundamental ethical principles (integrity, objectivity, professional competence and due care, confidentiality, professional behaviour) guide accountants against management bias in applying judgement."], exam:["Qualitative characteristics of financial information","Elements of financial statements definitions","Ethical threats in applying judgement (e.g. management pressure)"], example:"Where management pressures a preparer to recognise revenue early to meet a profit target, the fundamental principle of objectivity and integrity requires resisting that pressure and applying IFRS 15 correctly." },
 };
 
-function KnowledgeBase() {
+function KnowledgeBase({standards}:{standards:import("./lib/api").StandardOut[]}) {
   const [q,setQ]=useState("");
   const [selected,setSelected]=useState<string|null>(null);
   const results=standards.filter(s=>`${s.code} ${s.title} ${s.topics.join(" ")}`.toLowerCase().includes(q.toLowerCase()));

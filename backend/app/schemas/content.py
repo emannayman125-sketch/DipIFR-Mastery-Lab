@@ -8,6 +8,7 @@ class StandardOut(BaseModel):
     question_count: int
     mastery: int = 0
     examinable: bool = True
+    topics: list[str] = []
 
 class QuestionBankItem(BaseModel):
     id: int
