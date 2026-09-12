@@ -57,9 +57,42 @@ def _linked_standard_codes(db: Session, question: Question) -> list[str]:
     return codes or [question.topic_code]
 
 
+import re
+
+_MONTHS = {m: i for i, m in enumerate(
+    ["january", "february", "march", "april", "may", "june", "july",
+     "august", "september", "october", "november", "december"], start=1
+)}
+
+
+def _exam_sort_key(exam: MockExam) -> tuple:
+    """Mastery Mocks first (in their numbered order), then real past-exam
+    sittings sorted chronologically oldest -> newest. Without this, exams
+    come back in whatever order they happen to sit in the database — which,
+    since new sittings get added to the bank at different times as ACCA
+    publishes them, is not remotely chronological and mixes the two exam
+    types together confusingly."""
+    if exam.exam_type == "original_mock":
+        match = re.search(r"Mastery Mock (\d+)", exam.title)
+        return (0, int(match.group(1)) if match else 99, exam.title)
+
+    # "Past Round — {round_name}", where round_name is like "11 December
+    # 2015", "December 2020", or "June 2026" (an optional leading session
+    # number, then month name, then year).
+    match = re.search(
+        r"(January|February|March|April|May|June|July|August|September|October|November|December)\s+(\d{4})",
+        exam.title, re.IGNORECASE,
+    )
+    if match:
+        year = int(match.group(2))
+        month = _MONTHS[match.group(1).lower()]
+        return (1, year, month, exam.title)
+    return (2, 0, 0, exam.title)  # anything unparseable sorts last, not lost
+
+
 @router.get("", response_model=list[ExamSummary])
 def list_exams(db: Session = Depends(get_db)):
-    exams = db.scalars(select(MockExam)).all()
+    exams = sorted(db.scalars(select(MockExam)).all(), key=_exam_sort_key)
     result = []
     for exam in exams:
         count = db.scalar(
