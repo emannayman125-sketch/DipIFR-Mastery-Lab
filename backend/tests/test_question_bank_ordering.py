@@ -21,13 +21,17 @@ def test_question_bank_source_filter_returns_past_exam_questions(client):
     # + 16 (4 questions x 4 sittings) filling the December 2020 - June 2022
     #   gap
     # + 8 (4 questions x 2 sittings) for June 2025 and December 2025
-    # = 84 from the JSON file, plus 7 more real IAS 16/IAS 23 questions
+    # + 1 (Question 1 only — confirmed always a consolidation question in
+    #   every DipIFR sitting) for June 2026, added the day it appeared on
+    #   ACCA's site, before Questions 2-4's topics could be verified from an
+    #   examiner's report (not yet published)
+    # = 85 from the JSON file, plus 7 more real IAS 16/IAS 23 questions
     #   (REAL_SESSION_IAS16_23 in seed_data.py, covering Dec 2017, June 2018,
     #   Sep 2020, Dec 2020, Dec 2021, June 2022, June 2023) seeded separately
-    #   in Python = 91 total. All are reference-only: ACCA's copyrighted
+    #   in Python = 92 total. All are reference-only: ACCA's copyrighted
     # question/answer text was replaced with a link to the official past
     # paper plus our own topic keywords — see seed_data.py.
-    assert len(items) == 91
+    assert len(items) == 92
     assert all(item["source"] == "past_exam" for item in items)
 
 

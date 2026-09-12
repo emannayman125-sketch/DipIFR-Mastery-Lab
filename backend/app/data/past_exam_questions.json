@@ -1549,5 +1549,20 @@
       "borrowing costs",
       "IFRS for SMEs"
     ]
+  },
+  {
+    "round": "June 2026",
+    "question_number": 1,
+    "marks": 25,
+    "prompt": "This is Question 1 from the ACCA DipIFR exam sitting 'June 2026' (25 marks). To respect ACCA's copyright, the original question text is not reproduced on this platform.\n\nOpen the official question paper and the official answers here: https://www.accaglobal.com/gb/en/student/exam-support-resources/dipifr-study-resources/past-examinations.html\n\nQuestion 1 in every DipIFR sitting is a consolidated financial statements question, so that's the one confirmed topic here. This is a very recent sitting — ACCA's examiner's report (which would confirm the other specific issues tested) had not been published yet when this entry was added, so Questions 2-4 aren't in the bank yet. Read the real question directly at the link above.",
+    "source": "past_exam",
+    "source_reference": "https://www.accaglobal.com/gb/en/student/exam-support-resources/dipifr-study-resources/past-examinations.html",
+    "model_answer": "No official ACCA suggested answer is reproduced here for copyright reasons. ACCA publishes its own suggested solution alongside this past paper at: https://www.accaglobal.com/gb/en/student/exam-support-resources/dipifr-study-resources/past-examinations.html. Compare your answer against it once you've attempted it.",
+    "rubric_keywords": [
+      "consolidation",
+      "goodwill",
+      "non-controlling interest",
+      "intra-group trading"
+    ]
   }
 ]

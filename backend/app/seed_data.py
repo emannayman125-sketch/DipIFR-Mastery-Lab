@@ -1389,12 +1389,20 @@ def seed_if_empty(db: Session) -> None:
     db.flush()
     # Fixed past-round mocks: exactly 4 questions x 25 marks, preserving historical round structure.
     for name,ses in session_map.items():
+        qs=db.scalars(select(Question).where(Question.past_exam_session_id==ses.id).order_by(Question.question_number)).all()
+        # Only wrap a session into a "Past Round" mock exam once it actually
+        # has its full expected question count. A sitting added with just
+        # Question 1 (e.g. added the day it appears on ACCA's site, before
+        # Questions 2-4's topics can be verified from an examiner's report)
+        # would otherwise get a MockExam claiming to be a "4-question /
+        # 100-mark simulation" while only containing one question.
+        if len(qs) < ses.question_count:
+            continue
         title=f"Past Round — {name}"
         exam=db.scalar(select(MockExam).where(MockExam.title==title))
         if not exam:
             exam=MockExam(title=title,description=f"Historical DipIFR round from {name}. Fixed 4-question / 100-mark simulation.",duration_minutes=195,exam_type='past_exam',past_exam_session_id=ses.id)
             db.add(exam); db.flush()
-        qs=db.scalars(select(Question).where(Question.past_exam_session_id==ses.id).order_by(Question.question_number)).all()
         existing={x.question_id for x in db.scalars(select(MockExamQuestion).where(MockExamQuestion.exam_id==exam.id)).all()}
         for q in qs:
             if q.id not in existing:
