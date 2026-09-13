@@ -6,7 +6,7 @@ from sqlalchemy.orm import Session
 
 from ..db import get_db
 from ..dependencies import current_user
-from ..models import User, TopicProgress, PracticeAttempt, Question, Standard, QuestionStandardLink, MockExam, ExamAttempt
+from ..models import User, TopicProgress, PracticeAttempt, Question, Standard, QuestionStandardLink, MockExam, ExamAttempt, QuestionCriterion
 from ..schemas.learning import (
     ProgressResponse,
     NextQuestionResponse,
@@ -191,7 +191,11 @@ async def submit_practice(
         score_percent, feedback = keyword_grade(data.answer_text, question.rubric_keywords)
         graded_by_ai = False
     else:
-        ai_result = await grade_answer_with_ai(question.prompt, question.model_answer, data.answer_text)
+        criteria = [
+            (c.criterion, c.marks, c.expected_points)
+            for c in db.scalars(select(QuestionCriterion).where(QuestionCriterion.question_id == question.id)).all()
+        ]
+        ai_result = await grade_answer_with_ai(question.prompt, question.model_answer, data.answer_text, criteria or None)
         if ai_result:
             score_percent, feedback = ai_result
             graded_by_ai = True

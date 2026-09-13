@@ -224,7 +224,11 @@ async def submit_answer(
         score_percent, feedback = keyword_grade(data.answer_text, question.rubric_keywords)
         graded_by_ai = False
     else:
-        ai_result = await grade_answer_with_ai(question.prompt, question.model_answer, data.answer_text)
+        criteria = [
+            (c.criterion, c.marks, c.expected_points)
+            for c in db.scalars(select(QuestionCriterion).where(QuestionCriterion.question_id == question.id)).all()
+        ]
+        ai_result = await grade_answer_with_ai(question.prompt, question.model_answer, data.answer_text, criteria or None)
         if ai_result:
             score_percent, feedback = ai_result
             graded_by_ai = True
@@ -293,7 +297,11 @@ async def finish_attempt(attempt_id: int, user: User = Depends(current_user), db
         if question.source == "past_exam":
             answer.score_percent, answer.feedback = keyword_grade(answer.answer_text, question.rubric_keywords)
         else:
-            ai_result = await grade_answer_with_ai(question.prompt, question.model_answer, answer.answer_text)
+            criteria = [
+                (c.criterion, c.marks, c.expected_points)
+                for c in db.scalars(select(QuestionCriterion).where(QuestionCriterion.question_id == question.id)).all()
+            ]
+            ai_result = await grade_answer_with_ai(question.prompt, question.model_answer, answer.answer_text, criteria or None)
             if ai_result:
                 answer.score_percent, answer.feedback = ai_result
             else:

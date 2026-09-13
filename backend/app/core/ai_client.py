@@ -232,21 +232,49 @@ async def ask_tutor(
 
 
 GRADING_SYSTEM_PROMPT = (
-    "You are an ACCA DipIFR exam marker. Given a model answer and a student's "
-    "answer to the same question, score the student's answer as a percentage "
-    "of full marks (0-100) based on accuracy, completeness, and use of correct "
-    "IFRS/IAS terminology. Respond with ONLY a JSON object like "
-    '{"score_percent": 72, "feedback": "one or two sentences of specific feedback"} '
-    "and nothing else."
+    "You are an ACCA DipIFR exam marker. You will be given a question, a student's answer, a model "
+    "answer, and — where available — a formal marking scheme broken into specific weighted criteria.\n\n"
+    "If a marking scheme is provided: assess the student's answer against EACH criterion individually. "
+    "Award marks up to that criterion's stated maximum only where the student's answer genuinely "
+    "demonstrates that specific point — do not award marks for generic, vague, or irrelevant content "
+    "that happens to use the right terminology. Where a criterion depends on a specific calculated "
+    "figure, check that the student's number is actually correct; do not award those marks for correct "
+    "terminology attached to a wrong figure. Sum the marks earned across all criteria, then convert to "
+    "a percentage of the total marks available for the question.\n\n"
+    "If no marking scheme is provided, score holistically against the model answer based on accuracy, "
+    "completeness, and correct IFRS/IAS terminology.\n\n"
+    "Respond with ONLY a JSON object like "
+    '{"score_percent": 72, "feedback": "one or two sentences naming which specific criteria were met '
+    'or missed"} and nothing else.'
 )
 
 
-async def grade_answer_with_ai(question_prompt: str, model_answer: str, student_answer: str) -> tuple[int, str] | None:
-    """Returns (score_percent, feedback) or None if AI grading is unavailable."""
+async def grade_answer_with_ai(
+    question_prompt: str,
+    model_answer: str,
+    student_answer: str,
+    criteria: list[tuple[str, int, str]] | None = None,
+) -> tuple[int, str] | None:
+    """Returns (score_percent, feedback) or None if AI grading is unavailable.
+
+    `criteria` is the question's formal marking scheme as (criterion, marks,
+    expected_points) tuples — the same QuestionCriterion rows shown to the
+    student after grading for study purposes. Previously this data was
+    written to the database and displayed, but never actually given to the
+    grader itself, which only ever saw a holistic prose model answer with no
+    per-point weighting. Passing the real marking scheme in lets the AI
+    grade the way ACCA's own markers do: point by point against a scheme,
+    not "does this read like a good answer overall"."""
     if not is_configured():
         return None
+    marking_scheme_section = ""
+    if criteria:
+        total = sum(marks for _, marks, _ in criteria)
+        lines = "\n".join(f"- {criterion} ({marks} of {total} marks): {expected}" for criterion, marks, expected in criteria)
+        marking_scheme_section = f"\n\nFormal marking scheme ({total} marks total):\n{lines}\n"
     user_message = (
-        f"Question:\n{question_prompt}\n\n"
+        f"Question:\n{question_prompt}\n"
+        f"{marking_scheme_section}\n"
         f"Model answer:\n{model_answer}\n\n"
         f"Student answer:\n{student_answer}"
     )
